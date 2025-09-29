@@ -12,4 +12,14 @@ class FrontController extends Controller
     {
         return view('front.index');
     }
+
+    public function selectUser(): View
+    {
+        return view('front.pages.select_user');
+    }
+
+    public function userDashboard()
+    {
+        dd('user dashboard');
+    }
 }

@@ -39,9 +39,15 @@
                         <li class="nav-item">
                             <a href="contact.html" class="nav-link">Contact</a>
                         </li>
-                        <li class="nav-item">
-                            <a href="Login.html" class="nav-link">Login</a>
-                        </li>
+                        @if (Auth::guard('web')->check())
+                            <li class="nav-item">
+                                <a href="{{ route('user.dashboard') }}" class="nav-link">Dashboard</a>
+                            </li>
+                        @else
+                            <li class="nav-item">
+                                <a href="{{ route('select.user') }}" class="nav-link">Sign up/Sign in</a>
+                            </li>
+                        @endif
                     </ul>
                 </div>
             </nav>
