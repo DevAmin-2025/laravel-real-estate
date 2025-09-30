@@ -52,7 +52,7 @@ class AuthController extends Controller
         try {
             Mail::send(
                 'email.register_email',
-                ['token' => $token, 'user' => $user],
+                ['token' => $token, 'user' => 'user'],
                 function ($message) use ($request) {
                 $message->to($request->email);
                 $message->subject('Email Verification');
@@ -80,7 +80,7 @@ class AuthController extends Controller
             'token' => '',
             'status' => 1,
         ]);
-        return redirect()->route('user.login')->with('success', 'Registration completed. Please log in.');
+        return redirect()->route('user.login')->with('success', 'Email verification completed. Please log in.');
     }
 
     /**

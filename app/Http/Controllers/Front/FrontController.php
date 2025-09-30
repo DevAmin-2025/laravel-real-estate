@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Front;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class FrontController extends Controller
 {
@@ -35,7 +36,8 @@ class FrontController extends Controller
      */
     public function userDashboard(): View
     {
-        dd('user dashboard');
+        $user = Auth::guard('web')->user();
+        return view('front.user.dashboard.index', compact('user'));
     }
 
     /**
@@ -45,6 +47,7 @@ class FrontController extends Controller
      */
     public function agentDashboard(): View
     {
-        dd('agent dashboard');
+        $agent = Auth::guard('agent')->user();
+        return view('front.agent.dashboard.index', compact('agent'));
     }
 }
