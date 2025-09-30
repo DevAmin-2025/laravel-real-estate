@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'user.auth' => \App\Http\Middleware\UserAuth::class,
             'agent.auth' => \App\Http\Middleware\AgentAuth::class,
+            'admin.auth' => \App\Http\Middleware\AdminAuth::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
