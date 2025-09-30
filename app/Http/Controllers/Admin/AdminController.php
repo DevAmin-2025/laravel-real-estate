@@ -8,6 +8,11 @@ use App\Http\Controllers\Controller;
 
 class AdminController extends Controller
 {
+    /**
+     * Display the admin panel.
+     *
+     * @return View
+     */
     public function index(): View
     {
         return view('admin.index');

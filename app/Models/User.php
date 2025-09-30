@@ -2,25 +2,25 @@
 
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use Notifiable;
+    use Notifiable, SoftDeletes;
 
     /**
-     * The attributes that are not mass assignable.
-     *
-     * @var list<string>
+     * All attributes are mass assignable.
+     * Use with caution — this disables mass assignment protection.
+     * Ensure sensitive fields are handled explicitly in controllers or services.
      */
     protected $guarded = [];
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
+     * Attributes hidden from array and JSON serialization.
+     * Prevents exposure of sensitive fields.
      */
     protected $hidden = [
         'password',
@@ -28,8 +28,6 @@ class User extends Authenticatable
 
     /**
      * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
      */
     protected function casts(): array
     {

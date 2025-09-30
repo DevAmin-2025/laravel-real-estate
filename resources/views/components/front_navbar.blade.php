@@ -43,6 +43,10 @@
                             <li class="nav-item">
                                 <a href="{{ route('user.dashboard') }}" class="nav-link">Dashboard</a>
                             </li>
+                        @elseif (Auth::guard('agent')->check())
+                            <li class="nav-item">
+                                <a href="{{ route('agent.dashboard') }}" class="nav-link">Dashboard</a>
+                            </li>
                         @else
                             <li class="nav-item">
                                 <a href="{{ route('select.user') }}" class="nav-link">Sign up/Sign in</a>

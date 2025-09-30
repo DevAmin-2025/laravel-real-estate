@@ -31,8 +31,8 @@
                         <div class="card-body d-flex flex-column justify-content-center">
                             <i class="fas fa-user-tie fa-2x mb-3 text-success"></i>
                             <h5 class="card-title mb-4">Agent</h5>
-                            <a href="" class="btn btn-outline-success mb-2 w-75 mx-auto">Registration</a>
-                            <a href="" class="btn btn-success w-75 mx-auto">Login</a>
+                            <a href="{{ route('agent.register') }}" class="btn btn-outline-success mb-2 w-75 mx-auto">Registration</a>
+                            <a href="{{ route('agent.login') }}" class="btn btn-success w-75 mx-auto">Login</a>
                         </div>
                     </div>
                 </div>

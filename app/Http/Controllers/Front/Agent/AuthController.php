@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Front\User;
+namespace App\Http\Controllers\Front\Agent;
 
 use Carbon\Carbon;
-use App\Models\User;
+use App\Models\Agent;
 use Illuminate\View\View;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -17,17 +17,17 @@ use Illuminate\Http\RedirectResponse;
 class AuthController extends Controller
 {
     /**
-     * Show the user registration form.
+     * Show the agent registration form.
      *
      * @return View
      */
     public function register(): View
     {
-        return view('front.user.auth.register');
+        return view('front.agent.auth.register');
     }
 
     /**
-     * Handle user registration and send email verification.
+     * Handle agent registration and send email verification.
      *
      * @param Request $request
      * @return RedirectResponse
@@ -36,15 +36,19 @@ class AuthController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
-            'email' => 'required|email|unique:users,email',
-            'phone' => 'required|unique:users,phone|regex:/^[0-3]\d{8}$/',
+            'email' => 'required|email|unique:agents,email',
+            'company' => 'required|string',
+            'designation' => 'required|string',
+            'phone' => 'required|unique:agents,phone|regex:/^[0-3]\d{8}$/',
             'password' => 'required|min:6|confirmed',
         ]);
 
         $token = Str::random(64);
-        $user = User::create([
+        $agent = Agent::create([
             'name' => ucwords($request->name),
             'email' => $request->email,
+            'company' => $request->company,
+            'designation' => $request->designation,
             'phone' => '09' . $request->phone,
             'password' => Hash::make($request->password),
             'token' => $token,
@@ -52,49 +56,49 @@ class AuthController extends Controller
         try {
             Mail::send(
                 'email.register_email',
-                ['token' => $token, 'user' => $user],
+                ['token' => $token, 'agent' => $agent],
                 function ($message) use ($request) {
                 $message->to($request->email);
                 $message->subject('Email Verification');
             });
             return back()->with('success', 'Verification email has been sent to your email address.');
         } catch (\Exception) {
-            $user->delete();
+            $agent->delete();
             return back()->with('error', 'Failed to send verification email. Please try again later.');
         };
     }
 
     /**
-     * Verify user email using token and activate account.
+     * Verify agent email using token and activate account.
      *
      * @param Request $request
      * @return RedirectResponse
      */
     public function registerVerify(Request $request): RedirectResponse
     {
-        $user = User::where('token', $request->token)->first();
-        if (!$user) {
-            return redirect()->route('user.register')->with('error', 'Invalid credentials.');
+        $agent = Agent::where('token', $request->token)->first();
+        if (!$agent) {
+            return redirect()->route('agent.register')->with('error', 'Invalid credentials.');
         };
-        $user->update([
+        $agent->update([
             'token' => '',
             'status' => 1,
         ]);
-        return redirect()->route('user.login')->with('success', 'Registration completed. Please log in.');
+        return redirect()->route('agent.login')->with('success', 'Registration completed. Please log in.');
     }
 
     /**
-     * Show the user login form.
+     * Show the agent login form.
      *
      * @return View
      */
     public function login(): View
     {
-        return view('front.user.auth.login');
+        return view('front.agent.auth.login');
     }
 
     /**
-     * Authenticate user and redirect to dashboard.
+     * Authenticate agent and redirect to dashboard.
      *
      * @param Request $request
      * @return RedirectResponse
@@ -102,7 +106,7 @@ class AuthController extends Controller
     public function loginSubmit(Request $request): RedirectResponse
     {
         $request->validate([
-            'email' => 'required|email|exists:users,email',
+            'email' => 'required|email|exists:agents,email',
             'password' => 'required',
         ]);
 
@@ -111,8 +115,8 @@ class AuthController extends Controller
             'password' => $request->password,
             'status' => 1,
         ];
-        if (Auth::guard('web')->attempt($credentials)) {
-            return redirect()->route('user.dashboard')->with('success', 'Logged in successfully.');
+        if (Auth::guard('agent')->attempt($credentials)) {
+            return redirect()->route('agent.dashboard')->with('success', 'Logged in successfully.');
         } else {
             return back()->with('error', 'Invalid password or email not verified.');
         };
@@ -125,7 +129,7 @@ class AuthController extends Controller
      */
     public function forgetPassword(): View
     {
-        return view('front.user.auth.forget_password');
+        return view('front.agent.auth.forget_password');
     }
 
     /**
@@ -137,7 +141,7 @@ class AuthController extends Controller
     public function forgetPasswordSubmit(Request $request): RedirectResponse
     {
         $request->validate([
-            'email' => 'required|email|exists:users,email',
+            'email' => 'required|email|exists:agents,email',
         ]);
 
         $alreadyExists = DB::table('password_reset_tokens')
@@ -163,7 +167,7 @@ class AuthController extends Controller
         try {
             Mail::send(
                 'email.reset_password',
-                ['token' => $token, 'user' => 'user'],
+                ['token' => $token, 'agent' => 'agent'],
                 function ($message) use ($request) {
                 $message->to($request->email);
                 $message->subject('Reset Password');
@@ -183,7 +187,7 @@ class AuthController extends Controller
      */
     public function resetPassword(string $token): View
     {
-        return view('front.user.auth.reset_password', compact('token'));
+        return view('front.agent.auth.reset_password', compact('token'));
     }
 
     /**
@@ -199,27 +203,27 @@ class AuthController extends Controller
             'password' => 'required|min:6|confirmed',
         ]);
 
-        $userRecord = DB::table('password_reset_tokens')->where('token', $request->token)->first();
-        if (!$userRecord) {
+        $agentRecord = DB::table('password_reset_tokens')->where('token', $request->token)->first();
+        if (!$agentRecord) {
             return back()->with('error', 'Invalid credentials.');
         };
-        if ($userRecord->created_at < Carbon::now()->subMinutes(60)) {
+        if ($agentRecord->created_at < Carbon::now()->subMinutes(60)) {
             return back()->with('error', 'Link is expired. Please request again.');
         };
 
-        $user = User::where('email', $userRecord->email)->first();
-        if (!$user) {
-            return back()->with('error', 'User not found.');
+        $agent = Agent::where('email', $agentRecord->email)->first();
+        if (!$agent) {
+            return back()->with('error', 'Agent not found.');
         };
 
         try {
-            DB::transaction(function () use ($user, $request, $userRecord) {
-                $user->update([
+            DB::transaction(function () use ($agent, $request, $agentRecord) {
+                $agent->update([
                     'password' => Hash::make($request->password),
                 ]);
-                DB::table('password_reset_tokens')->where('email', $userRecord->email)->delete();
+                DB::table('password_reset_tokens')->where('email', $agentRecord->email)->delete();
             });
-            return redirect()->route('user.login')->with('success', 'Password changed successfully.');
+            return redirect()->route('agent.login')->with('success', 'Password changed successfully.');
         } catch(\Exception) {
             return back()->with('error', 'Operation failed. Please try again.');
         };
@@ -233,7 +237,7 @@ class AuthController extends Controller
      */
     public function logout(Request $request): RedirectResponse
     {
-        Auth::guard('web')->logout();
+        Auth::guard('agent')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect()->route('home')->with('success', 'Logged out successfully.');
