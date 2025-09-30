@@ -15,8 +15,8 @@
                 </a>
                 <div class="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active">
-                            <a href="{{ route('home') }}" class="nav-link">Home</a>
+                        <li class="nav-item">
+                            <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'active' : ''}}">Home</a>
                         </li>
                         <li class="nav-item">
                             <a href="properties.html" class="nav-link">Properties</a>
@@ -28,7 +28,7 @@
                             <a href="locations.html" class="nav-link">Locations</a>
                         </li>
                         <li class="nav-item">
-                            <a href="pricing.html" class="nav-link">Pricing</a>
+                            <a href="{{ route('pricing') }}" class="nav-link {{ request()->routeIs('pricing') ? 'active' : ''}}">Pricing</a>
                         </li>
                         <li class="nav-item">
                             <a href="faq.html" class="nav-link">FAQ</a>

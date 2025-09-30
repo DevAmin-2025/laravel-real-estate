@@ -3,9 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Front\FrontController;
+use App\Http\Controllers\Admin\PlanController as AdminPlanController;
+use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Front\User\AuthController as UserAuthController;
 use App\Http\Controllers\Front\Agent\AuthController as AgentAuthController;
-use App\Http\Controllers\Admin\AuthController as AdminAuthController;
+use App\Http\Controllers\Admin\DashboardController as AdminDahsboardController;
 use App\Http\Controllers\Front\User\DashboardController as UserDahsboardController;
 use App\Http\Controllers\Front\Agent\DashboardController as AgentDahsboardController;
 
@@ -15,6 +17,7 @@ Route::controller(FrontController::class)->group(function () {
     Route::get('select/user', 'selectUser')->name('select.user');
     Route::get('user/dashboard', 'userDashboard')->name('user.dashboard');
     Route::get('agent/dashboard', 'agentDashboard')->name('agent.dashboard');
+    Route::get('pricing', 'pricing')->name('pricing');
 });
 
 // User
@@ -67,3 +70,10 @@ Route::controller(AdminAuthController::class)->prefix('admin')->group(function (
     Route::get('reset/password/{token}', 'resetPassword')->name('admin.reset.password');
     Route::post('reset/password', 'resetPasswordSubmit')->name('admin.reset.password.submit');
 });
+
+Route::controller(AdminDahsboardController::class)->prefix('admin')->middleware('admin.auth')->group(function () {
+    Route::get('edit/profile', 'editProfile')->name('admin.edit.profile');
+    Route::post('edit/profile/{admin}', 'editProfileSubmit')->name('admin.edit.profile.submit');
+});
+
+Route::resource('admin/plans', AdminPlanController::class)->middleware('admin.auth')->except('show')->names('admin.plans');

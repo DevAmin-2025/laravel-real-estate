@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Models\Plan;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -49,5 +50,16 @@ class FrontController extends Controller
     {
         $agent = Auth::guard('agent')->user();
         return view('front.agent.dashboard.index', compact('agent'));
+    }
+
+    /**
+     * Show pricing page.
+     *
+     * @return View
+     */
+    public function pricing(): View
+    {
+        $plans = Plan::all();
+        return view('front.pages.pricing', compact('plans'));
     }
 }
