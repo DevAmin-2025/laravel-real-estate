@@ -4,29 +4,32 @@
 
 <div class="card">
     <ul class="list-group list-group-flush">
-        <li class="list-group-item active">
+        <li class="list-group-item {{ request()->routeIs('user.dashboard', 'agent.dashboard') ? 'active' : ''}}">
             <a href="{{ $user ? route('user.dashboard') : route('agent.dashboard') }}">Dashboard</a>
         </li>
         @unless ($user)
             <li class="list-group-item">
-                <a href="user-payment.html">Make Payment</a>
+                <a href="user-payment.html">Active Plan</a>
             </li>
-            <li class="list-group-item">
-                <a href="user-orders.html">Orders</a>
-            </li>
-            <li class="list-group-item">
-                <a href="user-property-add.html">Add Property</a>
+            <li class="list-group-item {{ request()->routeIs('agent.orders', 'agent.invoice') ? 'active' : ''}}">
+                <a href="{{ route('agent.orders') }}">Orders</a>
             </li>
             <li class="list-group-item">
                 <a href="user-properties.html">All Properties</a>
             </li>
+            <li class="list-group-item">
+                <a href="user-property-add.html">Add Property</a>
+            </li>
         @endunless
+        <li class="list-group-item">
+            <a href="">Messages</a>
+        </li>
         @if ($user)
             <li class="list-group-item">
                 <a href="user-wishlist.html">Wishlist</a>
             </li>
         @endif
-        <li class="list-group-item">
+        <li class="list-group-item {{ request()->routeIs('user.edit.profile', 'agent.edit.profile') ? 'active' : ''}}">
             <a href="{{ $user ? route('user.edit.profile') : route('agent.edit.profile') }}">Edit Profile</a>
         </li>
         <li class="list-group-item logout">

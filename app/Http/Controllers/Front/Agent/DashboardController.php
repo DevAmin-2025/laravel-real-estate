@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front\Agent;
 
 use Carbon\Carbon;
 use App\Models\Agent;
+use App\Models\Order;
 use Illuminate\View\View;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -116,5 +117,38 @@ class DashboardController extends Controller
             return redirect()->route('agent.login')->with('success', $message);
         };
         return back()->with('success', 'Profile updated successfully.');
+    }
+
+    /**
+     * Displays a paginated list of the authenticated agent's orders.
+     *
+     * - Retrieves the currently logged-in agent via the 'agent' guard.
+     * - Fetches the agent's orders in descending order of creation.
+     * - Eager-loads the associated plan for each order.
+     * - Paginates the results (12 per page).
+     * - Passes the data to the agent dashboard order view.
+     *
+     * @return View
+     */
+    public function orders(): View
+    {
+        $agent = Auth::guard('agent')->user();
+        $orders = $agent->orders()->with('plan')->latest()->paginate(12);
+        return view('front.agent.dashboard.order', compact('orders'));
+    }
+
+    /**
+     * Displays the invoice view for a specific order.
+     *
+     * - Eager-loads the related agent and plan for the given order.
+     * - Passes the enriched order model to the invoice view.
+     *
+     * @param Order $order
+     * @return View
+     */
+    public function invoice(Order $order): View
+    {
+        $order->load('agent', 'plan');
+        return view('front.agent.dashboard.invoice', compact('order'));
     }
 }

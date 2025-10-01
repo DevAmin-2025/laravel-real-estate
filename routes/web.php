@@ -60,6 +60,8 @@ Route::controller(AgentAuthController::class)->prefix('agent')->group(function (
 Route::controller(AgentDahsboardController::class)->prefix('agent')->middleware('agent.auth')->group(function () {
     Route::get('edit/profile', 'editProfile')->name('agent.edit.profile');
     Route::post('edit/profile/{agent}', 'editProfileSubmit')->name('agent.edit.profile.submit');
+    Route::get('orders', 'orders')->name('agent.orders');
+    Route::get('invoice/{order}', 'invoice')->name('agent.invoice');
 });
 
 Route::controller(AgentPaymentController::class)->prefix('agent')->middleware('agent.auth')->group(function () {
