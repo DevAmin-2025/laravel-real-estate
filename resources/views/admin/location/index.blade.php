@@ -5,9 +5,9 @@
     <div class="main-content">
         <section class="section">
             <div class="section-header d-flex justify-content-between">
-                <h1>Paid Plans</h1>
+                <h1>Locations</h1>
                 <div class="ml-auto">
-                    <a href="{{ route('admin.plans.create') }}" class="btn btn-primary"><i class="fas fa-plus m-2"></i>Create</a>
+                    <a href="{{ route('admin.locations.create') }}" class="btn btn-primary"><i class="fas fa-plus m-2"></i>Create</a>
                 </div>
             </div>
             <div class="section-body">
@@ -20,30 +20,26 @@
                                         <thead>
                                             <tr>
                                                 <th>SL</th>
+                                                <th>Photo</th>
                                                 <th>Name</th>
-                                                <th>Price</th>
-                                                <th>Allowed Days</th>
-                                                <th>Allowed Properties</th>
-                                                <th>Allowed Featured Properties</th>
-                                                <th>Allowed Photos</th>
-                                                <th>Allowed Videos</th>
+                                                <th>Slug</th>
+                                                <th>Total Properties</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($plans as $plan)
+                                            @foreach ($locations as $location)
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ $plan->name }}</td>
-                                                    <td>${{ number_format($plan->price) }}</td>
-                                                    <td>{{ displayLimit($plan->allowed_days) }}</td>
-                                                    <td>{{ displayLimit($plan->allowed_properties) }}</td>
-                                                    <td>{{ displayLimit($plan->allowed_featured_properties) }}</td>
-                                                    <td>{{ displayLimit($plan->allowed_photos) }}</td>
-                                                    <td>{{ displayLimit($plan->allowed_videos) }}</td>
                                                     <td>
-                                                        <a href="{{ route('admin.plans.edit', $plan->id) }}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
-                                                        <form action="{{ route('admin.plans.destroy', $plan->id) }}" method="POST" style="display: inline;">
+                                                        <img src="{{ asset('location-images/' . $location->photo) }}" class="w_150" alt="Location-image">
+                                                    </td>
+                                                    <td>{{ $location->name }}</td>
+                                                    <td>{{ $location->slug }}</td>
+                                                    <td>10</td>
+                                                    <td>
+                                                        <a href="{{ route('admin.locations.edit', $location) }}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
+                                                        <form action="{{ route('admin.locations.destroy', $location) }}" method="POST" style="display: inline;">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?');">

@@ -5,6 +5,9 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Front\FrontController;
 use App\Http\Controllers\Admin\PlanController as AdminPlanController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
+use App\Http\Controllers\Admin\LocationController as AdminLocationController;
+use App\Http\Controllers\Admin\PropertyTypeController as AdminPropertyTypeController;
+use App\Http\Controllers\Admin\AmenityController as AdminAmenityController;
 use App\Http\Controllers\Front\User\AuthController as UserAuthController;
 use App\Http\Controllers\Front\Agent\AuthController as AgentAuthController;
 use App\Http\Controllers\Admin\DashboardController as AdminDahsboardController;
@@ -77,3 +80,6 @@ Route::controller(AdminDahsboardController::class)->prefix('admin')->middleware(
 });
 
 Route::resource('admin/plans', AdminPlanController::class)->middleware('admin.auth')->except('show')->names('admin.plans');
+Route::resource('admin/locations', AdminLocationController::class)->middleware('admin.auth')->except('show')->names('admin.locations');
+Route::resource('admin/property-types', AdminPropertyTypeController::class)->middleware('admin.auth')->except('show')->names('admin.property.types');
+Route::resource('admin/amenities', AdminAmenityController::class)->middleware('admin.auth')->except('show')->names('admin.amenities');
