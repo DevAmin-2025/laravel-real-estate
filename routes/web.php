@@ -13,6 +13,7 @@ use App\Http\Controllers\Front\Agent\AuthController as AgentAuthController;
 use App\Http\Controllers\Admin\DashboardController as AdminDahsboardController;
 use App\Http\Controllers\Front\User\DashboardController as UserDahsboardController;
 use App\Http\Controllers\Front\Agent\DashboardController as AgentDahsboardController;
+use App\Http\Controllers\Front\Agent\PaymentController as AgentPaymentController;
 
 // Front
 Route::controller(FrontController::class)->group(function () {
@@ -59,6 +60,11 @@ Route::controller(AgentAuthController::class)->prefix('agent')->group(function (
 Route::controller(AgentDahsboardController::class)->prefix('agent')->middleware('agent.auth')->group(function () {
     Route::get('edit/profile', 'editProfile')->name('agent.edit.profile');
     Route::post('edit/profile/{agent}', 'editProfileSubmit')->name('agent.edit.profile.submit');
+});
+
+Route::controller(AgentPaymentController::class)->prefix('agent')->middleware('agent.auth')->group(function () {
+    Route::post('payment/send/{plan}', 'send')->name('agent.payment.send');
+    Route::get('payment/verify', 'verify')->name('agent.payment.verify');
 });
 
 // Admin

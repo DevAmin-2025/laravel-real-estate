@@ -37,7 +37,7 @@
                                     </li>
                                 </ul>
                                 <div class="buy">
-                                    <form action="" method="POST">
+                                    <form action="{{ route('agent.payment.send', $plan) }}" method="POST">
                                         @csrf
                                         <button type="submit" class="btn btn-primary"
                                         style="width: 100%; background-color: #d92228; border: none; font-weight: 500;">
