@@ -31,7 +31,7 @@ return new class extends Migration
             $table->string('linkedin')->nullable();
             $table->string('instagram')->nullable();
             $table->string('token')->nullable();
-            $table->string('status')->default(0)->comment('0=pending, 1=active, 2=suspended');
+            $table->string('status')->default(0)->comment('0=inactive, 1=active, 2=suspended');
             $table->softDeletes();
             $table->timestamps();
         });

@@ -1,16 +1,18 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Front\FrontController;
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\PlanController as AdminPlanController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\LocationController as AdminLocationController;
 use App\Http\Controllers\Admin\PropertyTypeController as AdminPropertyTypeController;
 use App\Http\Controllers\Admin\AmenityController as AdminAmenityController;
+use App\Http\Controllers\Admin\DashboardController as AdminDahsboardController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\AgentController as AdminAgentController;
 use App\Http\Controllers\Front\User\AuthController as UserAuthController;
 use App\Http\Controllers\Front\Agent\AuthController as AgentAuthController;
-use App\Http\Controllers\Admin\DashboardController as AdminDahsboardController;
 use App\Http\Controllers\Front\User\DashboardController as UserDahsboardController;
 use App\Http\Controllers\Front\Agent\DashboardController as AgentDahsboardController;
 use App\Http\Controllers\Front\Agent\PaymentController as AgentPaymentController;
@@ -91,3 +93,5 @@ Route::resource('admin/plans', AdminPlanController::class)->middleware('admin.au
 Route::resource('admin/locations', AdminLocationController::class)->middleware('admin.auth')->except('show')->names('admin.locations');
 Route::resource('admin/property-types', AdminPropertyTypeController::class)->middleware('admin.auth')->except('show')->names('admin.property.types');
 Route::resource('admin/amenities', AdminAmenityController::class)->middleware('admin.auth')->except('show')->names('admin.amenities');
+Route::resource('admin/users', AdminUserController::class)->middleware('admin.auth')->except('show')->names('admin.users');
+Route::resource('admin/agents', AdminAgentController::class)->middleware('admin.auth')->names('admin.agents');

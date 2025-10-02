@@ -31,4 +31,19 @@ class Agent extends Authenticatable
     {
         return $this->hasMany(Order::class);
     }
+
+    /**
+     * Accessor for the `status` attribute.
+     *
+     * Converts the raw integer value (0, 1 or 2) into a human-readable string.
+     *
+     * @param int $value
+     * @return string
+     */
+    public function getStatusAttribute(int $value): string
+    {
+        if ($value == 0) return 'Inactive';
+        if ($value == 1) return 'Active';
+        if ($value == 2) return 'Suspended';
+    }
 }

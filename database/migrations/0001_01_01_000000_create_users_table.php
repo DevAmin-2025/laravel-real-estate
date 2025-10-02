@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('photo')->nullable();
             $table->string('phone')->unique();
             $table->string('password');
-            $table->string('status')->default(0)->comment('0=pending, 1=active, 2=suspended');
+            $table->string('status')->default(0)->comment('0=inactive, 1=active, 2=suspended');
             $table->string('token')->nullable();
             $table->softDeletes();
             $table->timestamps();

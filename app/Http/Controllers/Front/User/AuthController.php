@@ -59,7 +59,7 @@ class AuthController extends Controller
             });
             return back()->with('success', 'Verification email has been sent to your email address.');
         } catch (\Exception) {
-            $user->delete();
+            $user->forceDelete();
             return back()->with('error', 'Failed to send verification email. Please try again later.');
         };
     }

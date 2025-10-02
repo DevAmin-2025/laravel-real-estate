@@ -47,8 +47,8 @@ class AuthController extends Controller
         $agent = Agent::create([
             'name' => ucwords($request->name),
             'email' => $request->email,
-            'company' => $request->company,
-            'designation' => $request->designation,
+            'company' => ucwords($request->company),
+            'designation' => ucwords($request->designation),
             'phone' => '09' . $request->phone,
             'password' => Hash::make($request->password),
             'token' => $token,
@@ -63,7 +63,7 @@ class AuthController extends Controller
             });
             return back()->with('success', 'Verification email has been sent to your email address.');
         } catch (\Exception) {
-            $agent->delete();
+            $agent->forceDelete();
             return back()->with('error', 'Failed to send verification email. Please try again later.');
         };
     }
@@ -84,7 +84,7 @@ class AuthController extends Controller
             'token' => '',
             'status' => 1,
         ]);
-        return redirect()->route('agent.login')->with('success', 'Registration completed. Please log in.');
+        return redirect()->route('agent.login')->with('success', 'Email verification completed. Please log in.');
     }
 
     /**
