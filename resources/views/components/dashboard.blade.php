@@ -14,11 +14,17 @@
             <li class="list-group-item {{ request()->routeIs('agent.orders', 'agent.invoice') ? 'active' : ''}}">
                 <a href="{{ route('agent.orders') }}">Orders</a>
             </li>
-            <li class="list-group-item">
-                <a href="user-properties.html">All Properties</a>
+            <li class="list-group-item {{ request()->routeIs(
+            'agent.properties.index',
+            'agent.properties.show',
+            'agent.properties.edit',
+            'agent.photo.gallery',
+            'agent.video.gallery'
+            ) ? 'active' : ''}}">
+                <a href="{{ route('agent.properties.index') }}">All Properties</a>
             </li>
-            <li class="list-group-item">
-                <a href="user-property-add.html">Add Property</a>
+            <li class="list-group-item {{ request()->routeIs('agent.properties.create') ? 'active' : ''}}">
+                <a href="{{ route('agent.properties.create') }}">Add Property</a>
             </li>
         @endunless
         <li class="list-group-item">

@@ -17,6 +17,7 @@ use App\Http\Controllers\Front\Agent\AuthController as AgentAuthController;
 use App\Http\Controllers\Front\User\DashboardController as UserDahsboardController;
 use App\Http\Controllers\Front\Agent\DashboardController as AgentDahsboardController;
 use App\Http\Controllers\Front\Agent\PaymentController as AgentPaymentController;
+use App\Http\Controllers\Front\Agent\PropertyController as AgentPropertyController;
 
 // Front
 Route::controller(FrontController::class)->group(function () {
@@ -71,6 +72,16 @@ Route::controller(AgentPaymentController::class)->prefix('agent')->middleware('a
     Route::post('payment/send/{plan}', 'send')->name('agent.payment.send');
     Route::get('payment/verify', 'verify')->name('agent.payment.verify');
 });
+
+Route::controller(AgentPropertyController::class)->middleware('agent.auth')->prefix('agent')->group(function () {
+    Route::get('photo-gallery/{property}', 'photoGallery')->name('agent.photo.gallery');
+    Route::post('photo-gallery/{property}', 'photoGallerySubmit')->name('agent.photo.gallery.submit');
+    Route::delete('photo-gallery/{propertyPhoto}', 'photoGalleryDestroy')->name('agent.photo.gallery.destroy');
+    Route::get('video-gallery/{property}', 'videoGallery')->name('agent.video.gallery');
+    Route::post('video-gallery/{property}', 'videoGallerySubmit')->name('agent.video.gallery.submit');
+    Route::delete('video-gallery/{propertyVideo}', 'videoGalleryDestroy')->name('agent.video.gallery.destroy');
+});
+Route::resource('agent/properties', AgentPropertyController::class)->middleware('agent.auth')->names('agent.properties');
 
 // Admin
 Route::get('admin', [AdminController::class, 'index'])->middleware('admin.auth')->name('admin.panel');
