@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Front;
 
 use App\Models\Plan;
+use App\Models\Amenity;
+use App\Models\Location;
 use App\Models\Property;
 use Illuminate\View\View;
+use App\Models\PropertyType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -25,10 +28,16 @@ class FrontController extends Controller
             ->take(6)
             ->with('propertyType', 'location', 'agent')
             ->get();
+        $popularLocations = Location::withCount([
+            'properties' => function ($query) {
+                $query->where('status', 1);
+            }
+        ])->orderByDesc('properties_count')->take(8)->get();
         return view(
             'front.index',
             compact(
                 'randomProperties',
+                'popularLocations',
             )
         );
     }
@@ -133,5 +142,91 @@ class FrontController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', 'Message could not be sent to the agent. Please try again.');
         };
+    }
+
+    /**
+     * Display a filtered and paginated list of active properties based on user search criteria.
+     *
+     * Validates that the minimum price does not exceed the maximum price. Then applies dynamic filters
+     * using the `scopeSearch()` method on the `Property` model. Filters include title, location, type,
+     * purpose, amenities, bedroom/bathroom count, featured status, and price range.
+     *
+     * Eager loads related models: `propertyType`, `location`, and `agent` for each property.
+     * Also retrieves all locations, property types, and amenities for use in the filter UI.
+     *
+     * @param Request $request
+     * @return View|RedirectResponse
+     */
+    public function properties(Request $request): View|RedirectResponse
+    {
+        if ($request->min_price > $request->max_price) {
+            return back()->with('error', 'Minimum price must be less than maximum price.');
+        };
+
+        $properties = Property::where('status', 1)
+            ->with('propertyType', 'location', 'agent')
+            ->latest()
+            ->search(
+                word: $request->title,
+                locationId: $request->location_id,
+                propertyTypeId: $request->type_id,
+                purpose: $request->purpose,
+                amenity: $request->amenity,
+                bedroom: $request->bedroom,
+                bathroom: $request->bathroom,
+                isFeatured: $request->is_featured,
+                minPrice: $request->min_price,
+                maxPrice: $request->max_price,
+            )
+            ->paginate(8);
+        $locations = Location::all();
+        $propertyTypes = PropertyType::all();
+        $amenities = Amenity::all();
+        return view(
+            'front.pages.properties',
+            compact(
+                'properties',
+                'locations',
+                'propertyTypes',
+                'amenities',
+            ));
+    }
+
+    /**
+     * Display a paginated list of active properties for a given location.
+     *
+     * This method retrieves all properties with `status = 1` that belong to the specified location.
+     * It eager loads related models for each property: property type, location, and agent,
+     * and paginates the results to show 12 properties per page.
+     *
+     * @param Location $location
+     * @return View
+     */
+    public function location(Location $location): View
+    {
+        $properties = Property::where('status', 1)
+            ->where('location_id', $location->id)
+            ->with('propertyType', 'location', 'agent')
+            ->paginate(12);
+        return view('front.pages.location', compact('properties', 'location'));
+    }
+
+    /**
+     * Display a paginated list of locations ranked by active property count.
+     *
+     * This method retrieves all locations along with a count of their associated properties
+     * where `status = 1`. The locations are sorted in descending order based on the number
+     * of active properties and paginated to show 16 per page.
+     *
+     * @return View
+     */
+    public function locations(): View
+    {
+        $locations = Location::withCount([
+            'properties' => function ($query) {
+                $query->where('status', 1);
+            }
+        ])->orderByDesc('properties_count')->paginate(16);
+        return view('front.pages.locations', compact('locations'));
     }
 }

@@ -19,13 +19,13 @@
                             <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'active' : ''}}">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a href="properties.html" class="nav-link">Properties</a>
+                            <a href="{{ route('properties') }}" class="nav-link {{ request()->routeIs('properties') ? 'active' : ''}}">Properties</a>
                         </li>
                         <li class="nav-item">
                             <a href="agents.html" class="nav-link">Agents</a>
                         </li>
                         <li class="nav-item">
-                            <a href="locations.html" class="nav-link">Locations</a>
+                            <a href="{{ route('locations') }}" class="nav-link {{ request()->routeIs('locations') ? 'active' : ''}}">Locations</a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('pricing') }}" class="nav-link {{ request()->routeIs('pricing') ? 'active' : ''}}">Pricing</a>

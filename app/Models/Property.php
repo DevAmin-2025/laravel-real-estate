@@ -10,6 +10,7 @@ use App\Models\PropertyPhoto;
 use App\Models\PropertyVideo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -101,5 +102,82 @@ class Property extends Model
     public function agent(): BelongsTo
     {
         return $this->belongsTo(Agent::class);
+    }
+
+    /**
+     * Scope a query to filter properties based on multiple optional criteria.
+     *
+     * This dynamic search scope applies filters conditionally based on the presence
+     * of input parameters. It supports keyword matching, location and property type filtering,
+     * purpose, amenities, bedroom/bathroom count, featured status, and price range.
+     *
+     * @param Builder $query
+     * @param string|null $word
+     * @param int|null $locationId
+     * @param int|null $propertyTypeId
+     * @param string|null $purpose
+     * @param array|null $amenity
+     * @param int|null $bedroom
+     * @param int|null $bathroom
+     * @param int|null $isFeatured
+     * @param int|null $minPrice
+     * @param int|null $maxPrice
+     * @return void
+     */
+    public function scopeSearch(
+        Builder $query,
+        ?string $word,
+        ?int $locationId,
+        ?int $propertyTypeId,
+        ?string $purpose,
+        ?array $amenity,
+        ?int $bedroom,
+        ?int $bathroom,
+        ?int $isFeatured,
+        ?int $minPrice,
+        ?int $maxPrice
+    ): void
+    {
+        if (isset($word)) {
+            $query->where('name', 'LIKE', '%' . $word . '%');
+        };
+
+        if (isset($locationId)) {
+            $query->where('location_id', $locationId);
+        };
+
+        if (isset($propertyTypeId)) {
+            $query->where('property_type_id', $propertyTypeId);
+        };
+
+        if (!empty($purpose)) {
+            $query->where('purpose', $purpose);
+        };
+
+        if (!empty($amenity)) {
+            $query->whereHas('amenities', function ($q) use ($amenity) {
+                $q->whereIn('amenities.id', $amenity);
+            });
+        };
+
+        if (isset($bedroom)) {
+            $query->where('bedroom', $bedroom);
+        };
+
+        if (isset($bathroom)) {
+            $query->where('bathroom', $bathroom);
+        };
+
+        if (isset($isFeatured)) {
+            $query->where('is_featured', $isFeatured);
+        };
+
+        if (isset($minPrice)) {
+            $query->where('price', '>=', $minPrice);
+        };
+
+        if (isset($maxPrice)) {
+            $query->where('price', '<=', $maxPrice);
+        };
     }
 }

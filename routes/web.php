@@ -28,7 +28,10 @@ Route::controller(FrontController::class)->group(function () {
     Route::get('agent/dashboard', 'agentDashboard')->middleware('agent.auth')->name('agent.dashboard');
     Route::get('pricing', 'pricing')->name('pricing');
     Route::get('property/{property:slug}', 'property')->name('property.detail');
+    Route::get('properties', 'properties')->name('properties');
     Route::post('property/inquiry/{property}', 'inquirySubmit')->name('property.inquiry.submit');
+    Route::get('location/{location:slug}', 'location')->name('location.detail');
+    Route::get('locations', 'locations')->name('locations');
 });
 
 // User
