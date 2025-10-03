@@ -27,6 +27,8 @@ Route::controller(FrontController::class)->group(function () {
     Route::get('user/dashboard', 'userDashboard')->middleware('user.auth')->name('user.dashboard');
     Route::get('agent/dashboard', 'agentDashboard')->middleware('agent.auth')->name('agent.dashboard');
     Route::get('pricing', 'pricing')->name('pricing');
+    Route::get('property/{property:slug}', 'property')->name('property.detail');
+    Route::post('property/inquiry/{property}', 'inquirySubmit')->name('property.inquiry.submit');
 });
 
 // User

@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Front;
 
 use App\Models\Plan;
+use App\Models\Property;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\RedirectResponse;
 
 class FrontController extends Controller
 {
@@ -17,7 +20,17 @@ class FrontController extends Controller
      */
     public function index(): View
     {
-        return view('front.index');
+        $randomProperties = Property::where('status', 1)
+            ->inRandomOrder()
+            ->take(6)
+            ->with('propertyType', 'location', 'agent')
+            ->get();
+        return view(
+            'front.index',
+            compact(
+                'randomProperties',
+            )
+        );
     }
 
     /**
@@ -61,5 +74,64 @@ class FrontController extends Controller
     {
         $plans = Plan::all();
         return view('front.pages.pricing', compact('plans'));
+    }
+
+    /**
+     * Display a single property detail page along with related properties.
+     *
+     * This method loads the full details of a given property, including its
+     * associated photos, videos, agent, location, property type, and amenities.
+     * It also fetches up to 4 related properties of the same type,
+     * ensuring they are active and randomized for variety.
+     *
+     * @param Property $property
+     * @return View
+     */
+    public function property(Property $property): View
+    {
+        $property->load('photos', 'videos', 'agent', 'location', 'propertyType', 'amenities');
+        $relatedProperties = Property::where('property_type_id', $property->property_type_id)
+            ->where('status', 1)
+            ->where('id', '!=', $property->id)
+            ->with('location', 'propertyType', 'agent')
+            ->inRandomOrder()
+            ->take(4)
+            ->get();
+        return view('front.pages.property', compact('property', 'relatedProperties'));
+    }
+
+    /**
+     * Handle user inquiry submission for a specific property.
+     *
+     * Validates the inquiry form input, then sends an email to the property's agent
+     * containing the user's message. If the email is successfully sent, a success
+     * message is flashed to the session. Otherwise, an error message is returned.
+     *
+     * @param Request $request
+     * @param Property $property
+     * @return RedirectResponse
+     */
+    public function inquirySubmit(Request $request, Property $property): RedirectResponse
+    {
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'phone' => 'required|regex:/^09[0-3]\d{8}$/',
+            'message' => 'required|string|min:10',
+        ]);
+
+        $agentEmail = $property->agent->email;
+        try {
+            Mail::send('email.user_inquiry', [
+                'property' => $property,
+                'request' => $request,
+            ], function ($message) use ($agentEmail, $property) {
+                $message->to($agentEmail);
+                $message->subject("Inquiry About The Property $property->name");
+            });
+            return back()->with('success', 'Message was successfully sent to the agent.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Message could not be sent to the agent. Please try again.');
+        };
     }
 }
