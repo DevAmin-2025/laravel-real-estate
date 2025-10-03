@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\DashboardController as AdminDahsboardController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\AgentController as AdminAgentController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\PropertyController as AdminPropertyController;
 use App\Http\Controllers\Front\User\AuthController as UserAuthController;
 use App\Http\Controllers\Front\Agent\AuthController as AgentAuthController;
 use App\Http\Controllers\Front\User\DashboardController as UserDahsboardController;
@@ -108,6 +109,11 @@ Route::resource('admin/property-types', AdminPropertyTypeController::class)->mid
 Route::resource('admin/amenities', AdminAmenityController::class)->middleware('admin.auth')->except('show')->names('admin.amenities');
 Route::resource('admin/users', AdminUserController::class)->middleware('admin.auth')->except('show')->names('admin.users');
 Route::resource('admin/agents', AdminAgentController::class)->middleware('admin.auth')->names('admin.agents');
+
+Route::post('admin/properties/make-active/{property}', [AdminPropertyController::class, 'makeActive'])->name('admin.properties.make.active');
+Route::delete('admin/properties/photo/{propertyPhoto}', [AdminPropertyController::class, 'destroyPhoto'])->name('admin.properties.photo.destroy');
+Route::delete('admin/properties/video/{propertyVideo}', [AdminPropertyController::class, 'destroyVideo'])->name('admin.properties.video.destroy');
+Route::resource('admin/properties', AdminPropertyController::class)->middleware('admin.auth')->except(['create', 'store'])->names('admin.properties');
 
 Route::controller(AdminOrderController::class)->prefix('admin')->middleware('admin.auth')->group(function () {
     Route::get('orders', 'index')->name('admin.orders');

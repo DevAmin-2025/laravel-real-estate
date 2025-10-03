@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Agent;
 use App\Models\Amenity;
 use App\Models\Location;
 use App\Models\PropertyType;
@@ -87,5 +88,18 @@ class Property extends Model
     public function videos(): HasMany
     {
         return $this->hasMany(PropertyVideo::class);
+    }
+
+    /**
+     * Get the agent associated with this property
+     *
+     * Defines an inverse one-to-many relationship between this model and Agent.
+     * Each property belongs to a single agent.
+     *
+     * @return BelongsTo
+     */
+    public function agent(): BelongsTo
+    {
+        return $this->belongsTo(Agent::class);
     }
 }
