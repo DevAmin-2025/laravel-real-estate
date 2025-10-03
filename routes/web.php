@@ -23,8 +23,8 @@ use App\Http\Controllers\Front\Agent\PropertyController as AgentPropertyControll
 Route::controller(FrontController::class)->group(function () {
     Route::get('/', 'index')->name('home');
     Route::get('select/user', 'selectUser')->name('select.user');
-    Route::get('user/dashboard', 'userDashboard')->name('user.dashboard');
-    Route::get('agent/dashboard', 'agentDashboard')->name('agent.dashboard');
+    Route::get('user/dashboard', 'userDashboard')->middleware('user.auth')->name('user.dashboard');
+    Route::get('agent/dashboard', 'agentDashboard')->middleware('agent.auth')->name('agent.dashboard');
     Route::get('pricing', 'pricing')->name('pricing');
 });
 
@@ -66,6 +66,7 @@ Route::controller(AgentDahsboardController::class)->prefix('agent')->middleware(
     Route::post('edit/profile/{agent}', 'editProfileSubmit')->name('agent.edit.profile.submit');
     Route::get('orders', 'orders')->name('agent.orders');
     Route::get('invoice/{order}', 'invoice')->name('agent.invoice');
+    Route::get('plan', 'plan')->name('agent.plan');
 });
 
 Route::controller(AgentPaymentController::class)->prefix('agent')->middleware('agent.auth')->group(function () {

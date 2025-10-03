@@ -8,8 +8,8 @@
             <a href="{{ $user ? route('user.dashboard') : route('agent.dashboard') }}">Dashboard</a>
         </li>
         @unless ($user)
-            <li class="list-group-item">
-                <a href="user-payment.html">Active Plan</a>
+            <li class="list-group-item {{ request()->routeIs('agent.plan') ? 'active' : ''}}">
+                <a href="{{ route('agent.plan') }}">Active Plan</a>
             </li>
             <li class="list-group-item {{ request()->routeIs('agent.orders', 'agent.invoice') ? 'active' : ''}}">
                 <a href="{{ route('agent.orders') }}">Orders</a>

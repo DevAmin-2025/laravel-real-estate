@@ -35,7 +35,7 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $order->transaction_id }}</td>
                                         <td>{{ $order->plan->name }}</td>
-                                        <td>${{ $order->plan->price }}</td>
+                                        <td>${{ number_format($order->plan->price) }}</td>
                                         <td>{{ $order->created_at->format('Y-m-d') }}</td>
                                         <td>
                                             <span class="badge {{ displayIcon($order->status, 'bg-success', 'bg-danger') }}">{{ $order->status ? 'Success' : 'Fail' }}</span>

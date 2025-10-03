@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Front\Agent;
 
 use Carbon\Carbon;
+use App\Models\Plan;
 use App\Models\Agent;
 use App\Models\Order;
+use App\Models\AgentPlan;
 use Illuminate\View\View;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -133,7 +135,7 @@ class DashboardController extends Controller
     public function orders(): View
     {
         $agent = Auth::guard('agent')->user();
-        $orders = $agent->orders()->with('plan')->latest()->paginate(12);
+        $orders = $agent->orders()->with('plan')->paginate(12);
         return view('front.agent.dashboard.order', compact('orders'));
     }
 
@@ -150,5 +152,25 @@ class DashboardController extends Controller
     {
         $order->load('agent', 'plan');
         return view('front.agent.dashboard.invoice', compact('order'));
+    }
+
+    /**
+     * Display the agent's current subscription plan and available upgrade options.
+     *
+     * Retrieves the agent's active plan (if any), including its associated Plan model,
+     * and fetches all available plans for display. An active plan is one that has not expired
+     * or has no expiration date (unlimited).
+     *
+     * @return View
+     */
+    public function plan(): View
+    {
+        $currentPlan = AgentPlan::where('agent_id', Auth::guard('agent')->id())
+            ->where('expire_at', '>', now())
+            ->orWhere('expire_at', null)
+            ->with('plan')
+            ->first();
+        $plans = Plan::all();
+        return view('front.agent.dashboard.plan', compact('currentPlan', 'plans'));
     }
 }
