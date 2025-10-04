@@ -91,7 +91,26 @@
                                 </div>
                                 <div class="price">${{ number_format($property->price) }}</div>
                                 <div class="wishlist">
-                                    <a href=""><i class="far fa-heart"></i></a>
+                                    @php
+                                        $loggedIn = Auth::guard('web')->check();
+                                        if ($loggedIn) {
+                                            $user = Auth::guard('web')->user()->load('wishlist');
+                                            $hasWishlisted = $user->hasWishlisted($property);
+                                            $wishlistItem = $user->wishlist->firstWhere('property_id', $property->id);
+                                        };
+                                    @endphp
+                                    @if (!$loggedIn || !$hasWishlisted)
+                                        <a href="{{ route('user.add.to.wishlist', $property) }}"><i class="far fa-heart"></i></a>
+                                    @else
+                                        <form action="{{ route('user.remove.from.wishlist', $wishlistItem) }}" method="POST" style="display: inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" style="border: none; background: transparent;">
+                                                <i class="fas fa-heart" style="color: #d92228;">
+                                                </i>
+                                            </button>
+                                        </form>
+                                    @endif
                                 </div>
                             </div>
                             <div class="text">

@@ -20,22 +20,6 @@ use App\Http\Controllers\Front\Agent\DashboardController as AgentDahsboardContro
 use App\Http\Controllers\Front\Agent\PaymentController as AgentPaymentController;
 use App\Http\Controllers\Front\Agent\PropertyController as AgentPropertyController;
 
-// Front
-Route::controller(FrontController::class)->group(function () {
-    Route::get('/', 'index')->name('home');
-    Route::get('select/user', 'selectUser')->name('select.user');
-    Route::get('user/dashboard', 'userDashboard')->middleware('user.auth')->name('user.dashboard');
-    Route::get('agent/dashboard', 'agentDashboard')->middleware('agent.auth')->name('agent.dashboard');
-    Route::get('pricing', 'pricing')->name('pricing');
-    Route::get('property/{property:slug}', 'property')->name('property.detail');
-    Route::get('properties', 'properties')->name('properties');
-    Route::post('property/inquiry/{property}', 'inquirySubmit')->name('property.inquiry.submit');
-    Route::get('location/{location:slug}', 'location')->name('location.detail');
-    Route::get('locations', 'locations')->name('locations');
-    Route::get('agents', 'agents')->name('agents');
-    Route::get('agent/{agent}', 'agent')->name('agent.detail');
-});
-
 // User
 Route::controller(UserAuthController::class)->prefix('user')->group(function () {
     Route::get('register', 'register')->name('user.register');
@@ -53,6 +37,9 @@ Route::controller(UserAuthController::class)->prefix('user')->group(function () 
 Route::controller(UserDahsboardController::class)->prefix('user')->middleware('user.auth')->group(function () {
     Route::get('edit/profile', 'editProfile')->name('user.edit.profile');
     Route::post('edit/profile/{user}', 'editProfileSubmit')->name('user.edit.profile.submit');
+    Route::get('wishlist', 'wishlist')->name('user.wishlist');
+    Route::get('add-to-wishlist/{property}', 'addToWishlist')->name('user.add.to.wishlist');
+    Route::delete('remove-from-wishlist/{wishlist}', 'removeFromWishlist')->name('user.remove.from.wishlist');
 });
 
 // Agent
@@ -91,6 +78,22 @@ Route::controller(AgentPropertyController::class)->middleware('agent.auth')->pre
     Route::delete('video-gallery/{propertyVideo}', 'videoGalleryDestroy')->name('agent.video.gallery.destroy');
 });
 Route::resource('agent/properties', AgentPropertyController::class)->middleware('agent.auth')->names('agent.properties');
+
+// Front
+Route::controller(FrontController::class)->group(function () {
+    Route::get('/', 'index')->name('home');
+    Route::get('select/user', 'selectUser')->name('select.user');
+    Route::get('user/dashboard', 'userDashboard')->middleware('user.auth')->name('user.dashboard');
+    Route::get('agent/dashboard', 'agentDashboard')->middleware('agent.auth')->name('agent.dashboard');
+    Route::get('pricing', 'pricing')->name('pricing');
+    Route::get('property/{property:slug}', 'property')->name('property.detail');
+    Route::get('properties', 'properties')->name('properties');
+    Route::post('property/inquiry/{property}', 'inquirySubmit')->name('property.inquiry.submit');
+    Route::get('location/{location:slug}', 'location')->name('location.detail');
+    Route::get('locations', 'locations')->name('locations');
+    Route::get('agents', 'agents')->name('agents');
+    Route::get('agent/{agent}', 'agent')->name('agent.detail');
+});
 
 // Admin
 Route::get('admin', [AdminController::class, 'index'])->middleware('admin.auth')->name('admin.panel');

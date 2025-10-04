@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Front\User;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Property;
+use App\Models\Wishlist;
 use Illuminate\View\View;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -92,5 +94,55 @@ class DashboardController extends Controller
             return redirect()->route('user.login')->with('success', $message);
         };
         return back()->with('success', 'Profile updated successfully.');
+    }
+
+    /**
+     * Display the authenticated user's wishlist items.
+     *
+     * Retrieves all wishlist entries for the currently authenticated user using the `web` guard.
+     * The items are ordered by latest first and passed to the dashboard view for rendering.
+     *
+     * @return View
+     */
+    public function wishlist(): View
+    {
+        $wishlistItems = Wishlist::where('user_id', Auth::guard('web')->id())
+            ->with('property')
+            ->paginate(12);
+        return view('front.user.dashboard.wishlist', compact('wishlistItems'));
+    }
+
+    /**
+     * Add the specified property to the authenticated user's wishlist.
+     *
+     * Creates a new wishlist entry linking the current user (via `web` guard)
+     * to the given property. Redirects back with a success message.
+     *
+     * @param Property $property
+     * @return RedirectResponse
+     */
+    public function addToWishlist(Property $property): RedirectResponse
+    {
+        $userId = Auth::guard('web')->id();
+        Wishlist::create([
+            'property_id' => $property->id,
+            'user_id' => $userId,
+        ]);
+        return back()->with('success', 'Property added to wishlist.');
+    }
+
+    /**
+     * Remove the specified wishlist entry.
+     *
+     * Deletes the wishlist record from the database and redirects back
+     * with a success message. Assumes route model binding for the `Wishlist` model.
+     *
+     * @param Wishlist $wishlist
+     * @return RedirectResponse
+     */
+    public function removeFromWishlist(Wishlist $wishlist): RedirectResponse
+    {
+        $wishlist->delete();
+        return back()->with('success', 'Property deleted from wishlist.');
     }
 }

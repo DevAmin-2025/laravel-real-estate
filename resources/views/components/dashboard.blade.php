@@ -31,8 +31,8 @@
             <a href="">Messages</a>
         </li>
         @if ($user)
-            <li class="list-group-item">
-                <a href="user-wishlist.html">Wishlist</a>
+            <li class="list-group-item {{ request()->routeIs('user.wishlist') ? 'active' : ''}}">
+                <a href="{{ route('user.wishlist') }}">Wishlist</a>
             </li>
         @endif
         <li class="list-group-item {{ request()->routeIs('user.edit.profile', 'agent.edit.profile') ? 'active' : ''}}">

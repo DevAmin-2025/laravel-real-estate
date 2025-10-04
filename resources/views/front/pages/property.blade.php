@@ -10,7 +10,7 @@
             </div>
         </div>
     </div>
-    <div class="property-result">
+    <div class="property-result mt_40">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-md-12">
@@ -121,7 +121,28 @@
                                                         @endif
                                                     </div>
                                                     <div class="price">${{ number_format($relatedProperty->price) }}</div>
-                                                    <div class="wishlist"><a href=""><i class="far fa-heart"></i></a></div>
+                                                    <div class="wishlist">
+                                                        @php
+                                                            $loggedIn = Auth::guard('web')->check();
+                                                            if ($loggedIn) {
+                                                                $user = Auth::guard('web')->user()->load('wishlist');
+                                                                $hasWishlisted = $user->hasWishlisted($relatedProperty);
+                                                                $wishlistItem = $user->wishlist->firstWhere('property_id', $relatedProperty->id);
+                                                            };
+                                                        @endphp
+                                                        @if (!$loggedIn || !$hasWishlisted)
+                                                            <a href="{{ route('user.add.to.wishlist', $relatedProperty) }}"><i class="far fa-heart"></i></a>
+                                                        @else
+                                                            <form action="{{ route('user.remove.from.wishlist', $wishlistItem) }}" method="POST" style="display: inline;">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" style="border: none; background: transparent;">
+                                                                    <i class="fas fa-heart" style="color: #d92228;">
+                                                                    </i>
+                                                                </button>
+                                                            </form>
+                                                        @endif
+                                                    </div>
                                                 </div>
                                                 <div class="text">
                                                     <h3><a href="{{ route('property.detail', $relatedProperty->slug)}}">{{ $relatedProperty->name }}</a></h3>

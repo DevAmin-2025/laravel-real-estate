@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Property;
+use App\Models\Wishlist;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -49,5 +52,32 @@ class User extends Authenticatable
         if ($value == 0) return 'Inactive';
         if ($value == 1) return 'Active';
         if ($value == 2) return 'Suspended';
+    }
+
+    /**
+     * Get all wishlist entries associated with this user.
+     *
+     * Defines a one-to-many relationship where a user can have multiple wishlist items.
+     * Each wishlist entry typically references a property the user has favorited.
+     *
+     * @return HasMany
+     */
+    public function wishlist(): HasMany
+    {
+        return $this->hasMany(Wishlist::class);
+    }
+
+    /**
+     * Determine if the authenticated user has wishlisted the given property.
+     *
+     * Checks the user's wishlist collection to see if it contains an entry
+     * matching the specified property's ID. Returns `true` if found, otherwise `false`.
+     *
+     * @param Property $property
+     * @return bool
+     */
+    public function hasWishlisted(Property $property): bool
+    {
+        return $this->wishlist->contains('property_id', $property->id);
     }
 }
