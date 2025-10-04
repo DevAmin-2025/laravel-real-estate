@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use Carbon\Carbon;
 use App\Models\Agent;
+use App\Models\Property;
 use Illuminate\View\View;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -227,8 +229,35 @@ class AgentController extends Controller
      */
     public function destroy(Agent $agent): RedirectResponse
     {
-        Storage::delete('user-images/' . $agent->photo);
-        $agent->delete();
-        return redirect()->route('admin.agents.index')->with('success', 'Agent deleted successfully');
+        try {
+            DB::transaction(function () use ($agent) {
+                $properties = Property::where('agent_id', $agent->id)->get();
+                foreach ($properties as $property) {
+                    foreach ($property->photos as $photo) {
+                        Storage::delete('property-images/' . $photo->photo);
+                        $photo->delete();
+                    };
+                    $property->videos()->delete();
+                    $property->amenities()->detach();
+                    Storage::delete('property-images/' . $property->featured_photo);
+                    $property->delete();
+                };
+                Storage::delete('user-images/' . $agent->photo);
+                $agent->delete();
+            });
+
+            if (Auth::guard('agent')->id() == $agent->id) {
+                Auth::guard('agent')->logout();
+            };
+            return redirect()->route('admin.agents.index')->with(
+                'success',
+                'Agent and all associated data deleted successfully.',
+            );
+        } catch (\Exception $e) {
+            return redirect()->route('admin.agents.index')->with(
+                'error',
+                'An error occurred while deleting the agent. Please try again.',
+            );
+        };
     }
 }

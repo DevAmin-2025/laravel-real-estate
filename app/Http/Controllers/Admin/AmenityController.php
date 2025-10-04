@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Amenity;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 
@@ -87,6 +88,16 @@ class AmenityController extends Controller
      */
     public function destroy(Amenity $amenity): RedirectResponse
     {
+        $usedAmenity = DB::table('amenity_property')
+            ->where('amenity_id', $amenity->id)
+            ->exists();
+        if ($usedAmenity) {
+            return back()->with(
+                'error',
+                'This amenity is currently linked to one or more properties and cannot be deleted.'
+            );
+        };
+
         $amenity->delete();
         return redirect()->route('admin.amenities.index')->with('success', 'Amenity deleted successfully');
     }

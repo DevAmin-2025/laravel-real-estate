@@ -36,7 +36,7 @@
                                                     </td>
                                                     <td>{{ $location->name }}</td>
                                                     <td>{{ $location->slug }}</td>
-                                                    <td>10</td>
+                                                    <td>{{ $location->properties_count }}</td>
                                                     <td>
                                                         <a href="{{ route('admin.locations.edit', $location) }}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
                                                         <form action="{{ route('admin.locations.destroy', $location) }}" method="POST" style="display: inline;">

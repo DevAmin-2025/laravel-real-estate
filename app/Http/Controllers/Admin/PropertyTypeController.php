@@ -87,6 +87,10 @@ class PropertyTypeController extends Controller
      */
     public function destroy(PropertyType $propertyType): RedirectResponse
     {
+        if ($propertyType->properties->isNotEmpty()) {
+            return redirect()->back()->with('error', 'Cannot delete property type with active properties.');
+        };
+
         $propertyType->delete();
         return redirect()->route('admin.property.types.index')->with('success', 'Property type deleted successfully');
     }

@@ -20,7 +20,7 @@ class LocationController extends Controller
      */
     public function index(): View
     {
-        $locations = Location::latest()->get();
+        $locations = Location::withCount('properties')->get();
         return view('admin.location.index', compact('locations'));
     }
 
@@ -44,7 +44,7 @@ class LocationController extends Controller
     {
         $request->validate([
             'photo' => 'required|image|max:2048',
-            'name' => 'required|string|min:3',
+            'name' => 'required|string|min:3|unique:locations,name',
         ]);
 
         $fileName = Carbon::now()->micro . '-' . $request->photo->getClientOriginalName();
@@ -79,7 +79,7 @@ class LocationController extends Controller
     public function update(Request $request, Location $location): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|string|min:3',
+            'name' => 'required|string|min:3|unique:locations,name,' . $location->id,
             'photo' => 'nullable|image|max:2048',
         ]);
 
@@ -106,6 +106,10 @@ class LocationController extends Controller
      */
     public function destroy(Location $location): RedirectResponse
     {
+        if ($location->properties->isNotEmpty()) {
+            return back()->with('error', 'Cannot delete location with active properties.');
+        };
+
         Storage::delete('location-images/' . $location->photo);
         $location->delete();
         return redirect()->route('admin.locations.index')->with('success', 'Location deleted successfully');

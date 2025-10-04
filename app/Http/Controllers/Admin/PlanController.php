@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Plan;
+use App\Models\AgentPlan;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -40,7 +41,7 @@ class PlanController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|string|min:3',
+            'name' => 'required|string|min:3|unique:plans,name',
             'price' => 'required|integer|min:0',
             'allowed_days' => 'required|integer|min:-1',
             'allowed_properties' => 'required|integer|min:-1',
@@ -85,7 +86,7 @@ class PlanController extends Controller
             'price' => (int) str_replace(',', '', $request->price),
         ]);
         $request->validate([
-            'name' => 'required|string|min:3',
+            'name' => 'required|string|min:3|unique:plans,name,' . $plan->id,
             'price' => 'required|integer|min:0',
             'allowed_days' => 'required|integer|min:-1',
             'allowed_properties' => 'required|integer|min:-1',
@@ -114,6 +115,14 @@ class PlanController extends Controller
      */
     public function destroy(Plan $plan): RedirectResponse
     {
+        $activePlans = AgentPlan::where('plan_id', $plan->id)
+            ->where('expire_at', '>', now())
+            ->orWhere('expire_at', null)
+            ->get();
+        if ($activePlans) {
+            return back()->with('error', 'Cannot delete plan with active agents.');
+        };
+
         $plan->delete();
         return redirect()->route('admin.plans.index')->with('success', 'Plan deleted successfully.');
     }
