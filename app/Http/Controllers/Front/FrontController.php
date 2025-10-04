@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Models\Plan;
+use App\Models\Agent;
 use App\Models\Amenity;
 use App\Models\Location;
 use App\Models\Property;
@@ -33,11 +34,16 @@ class FrontController extends Controller
                 $query->where('status', 1);
             }
         ])->orderByDesc('properties_count')->take(8)->get();
+        $agents = Agent::where('status', 1)
+            ->inRandomOrder()
+            ->take(8)
+            ->get();
         return view(
             'front.index',
             compact(
                 'randomProperties',
                 'popularLocations',
+                'agents',
             )
         );
     }
@@ -228,5 +234,39 @@ class FrontController extends Controller
             }
         ])->orderByDesc('properties_count')->paginate(16);
         return view('front.pages.locations', compact('locations'));
+    }
+
+    /**
+     * Display a paginated list of agents.
+     *
+     * This method retrieves all agents where `status = 1`.
+     * The agents are sorted in descending order based on the creation date.
+     *
+     * @return View
+     */
+    public function agents(): View
+    {
+        $agents = Agent::where('status', 1)->latest()->paginate(15);
+        return view('front.pages.agents', compact('agents'));
+    }
+
+    /**
+     * Display a paginated list of active properties associated with a specific agent.
+     *
+     * This method retrieves all properties with `status = 1` that belong to the given agent.
+     * It eager loads related models: `propertyType` and `location` for each property,
+     * and paginates the results to show 12 properties per page.
+     *
+     * @param Agent $agent
+     * @return View
+     */
+    public function agent(Agent $agent): View
+    {
+        $properties = Property::where('status', 1)
+            ->where('agent_id', $agent->id)
+            ->latest()
+            ->with('propertyType', 'location')
+            ->paginate(12);
+        return view('front.pages.agent', compact('agent', 'properties'));
     }
 }

@@ -10,7 +10,7 @@
             </div>
         </div>
     </div>
-    <div class="property-result pt_50 pb_50">
+    <div class="property-result">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-md-12">
@@ -144,7 +144,7 @@
                                                         </div>
                                                         <div class="agent-section">
                                                             <img class="agent-photo" src="{{ $relatedProperty->agent->photo ? asset('user-images/' . $relatedProperty->agent->photo) : asset('user-images/default.png') }}" alt="Agent-image">
-                                                            <a href="">{{ $relatedProperty->agent->name }} ({{ $relatedProperty->agent->company }})</a>
+                                                            <a href="{{ route('agent.detail', $relatedProperty->agent) }}">{{ $relatedProperty->agent->name }} ({{ $relatedProperty->agent->company }})</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -166,7 +166,7 @@
                                 <img src="{{ $property->agent->photo ? asset('user-images/' . $property->agent->photo) : asset('user-images/default.png') }}" alt="Agent-image">
                             </div>
                             <div class="right">
-                                <h3><a href="">{{ $property->agent->name }}</a></h3>
+                                <h3><a href="{{ route('agent.detail', $property->agent) }}">{{ $property->agent->name }}</a></h3>
                                 <h4>{{ $property->agent->designation }}</h4>
                             </div>
                         </div>

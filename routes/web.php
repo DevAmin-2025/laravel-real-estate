@@ -32,6 +32,8 @@ Route::controller(FrontController::class)->group(function () {
     Route::post('property/inquiry/{property}', 'inquirySubmit')->name('property.inquiry.submit');
     Route::get('location/{location:slug}', 'location')->name('location.detail');
     Route::get('locations', 'locations')->name('locations');
+    Route::get('agents', 'agents')->name('agents');
+    Route::get('agent/{agent}', 'agent')->name('agent.detail');
 });
 
 // User

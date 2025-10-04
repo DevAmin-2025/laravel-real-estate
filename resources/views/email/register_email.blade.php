@@ -27,7 +27,7 @@
     <p>Name: {{ $adminAgent->name }}</p>
     <p>Email: {{ $adminAgent->email }}</p>
     <p>Phone: {{ $adminAgent->phone }}</p>
-    <p>Password: {{ $adminAgent->password }}</p>
+    <p>Password: {{ $request->password }}</p>
     <b>You can change your account info later in your dashboard.</b>
     <hr>
     <p>Please click on the following link to complete your registration:</p>

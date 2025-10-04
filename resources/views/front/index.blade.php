@@ -115,7 +115,7 @@
                                     </div>
                                     <div class="agent-section">
                                         <img class="agent-photo" src="{{ $property->agent->photo ? asset('user-images/' . $property->agent->photo) : asset('user-images/default.png') }}" alt="Agent-image">
-                                        <a href="">{{ $property->agent->name }} ({{ $property->agent->company }})</a>
+                                        <a href="{{ route('agent.detail', $property->agent) }}">{{ $property->agent->name }} ({{ $property->agent->company }})</a>
                                     </div>
                                 </div>
                             </div>
@@ -195,102 +195,22 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-3 col-md-3">
-                    <div class="item">
-                        <div class="photo">
-                            <a href=""><img src="uploads/agent1.jpg" alt=""></a>
-                        </div>
-                        <div class="text">
-                            <h2>
-                                <a href="agent.html">Michael Wyatt</a>
-                            </h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3">
-                    <div class="item">
-                        <div class="photo">
-                            <a href=""><img src="uploads/agent2.jpg" alt=""></a>
-                        </div>
-                        <div class="text">
-                            <h2>
-                                <a href="agent.html">Jason Schwartz</a>
-                            </h2>
+                @foreach ($agents as $agent)
+                    <div class="col-lg-3 col-md-3">
+                        <div class="item">
+                            <div class="photo">
+                                <a href="{{ route('agent.detail', $agent) }}">
+                                    <img src="{{ $agent->photo ? asset('user-images/' . $agent->photo) : asset('user-images/default.png') }}" alt="Agent-image">
+                                </a>
+                            </div>
+                            <div class="text">
+                                <h2>
+                                    <a href="{{ route('agent.detail', $agent) }}">{{ $agent->name }}</a>
+                                </h2>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-3 col-md-3">
-                    <div class="item">
-                        <div class="photo">
-                            <a href=""><img src="uploads/agent3.jpg" alt=""></a>
-                        </div>
-                        <div class="text">
-                            <h2>
-                                <a href="agent.html">Joshua Lash</a>
-                            </h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3">
-                    <div class="item">
-                        <div class="photo">
-                            <a href=""><img src="uploads/agent4.jpg" alt=""></a>
-                        </div>
-                        <div class="text">
-                            <h2>
-                                <a href="agent.html">Eric Williams</a>
-                            </h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3">
-                    <div class="item">
-                        <div class="photo">
-                            <a href=""><img src="uploads/agent5.jpg" alt=""></a>
-                        </div>
-                        <div class="text">
-                            <h2>
-                                <a href="agent.html">Jay Smith</a>
-                            </h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3">
-                    <div class="item">
-                        <div class="photo">
-                            <a href=""><img src="uploads/agent6.jpg" alt=""></a>
-                        </div>
-                        <div class="text">
-                            <h2>
-                                <a href="agent.html">Joseph Commons</a>
-                            </h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3">
-                    <div class="item">
-                        <div class="photo">
-                            <a href=""><img src="uploads/agent7.jpg" alt=""></a>
-                        </div>
-                        <div class="text">
-                            <h2>
-                                <a href="agent.html">Richard Renner</a>
-                            </h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3">
-                    <div class="item">
-                        <div class="photo">
-                            <a href=""><img src="uploads/agent8.jpg" alt=""></a>
-                        </div>
-                        <div class="text">
-                            <h2>
-                                <a href="agent.html">Ryan Dingle</a>
-                            </h2>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>

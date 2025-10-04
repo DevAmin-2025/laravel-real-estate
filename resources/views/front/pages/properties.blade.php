@@ -164,7 +164,7 @@
                                                         </div>
                                                         <div class="agent-section">
                                                             <img class="agent-photo" src="{{ $property->agent->photo ? asset('user-images/' . $property->agent->photo) : asset('user-images/default.png') }}" alt="Agent-image">
-                                                            <a href="">{{ $property->agent->name }} ({{ $property->agent->company }})</a>
+                                                            <a href="{{ route('agent.detail', $property->agent) }}">{{ $property->agent->name }} ({{ $property->agent->company }})</a>
                                                         </div>
                                                     </div>
                                                 </div>

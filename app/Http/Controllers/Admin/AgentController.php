@@ -98,6 +98,7 @@ class AgentController extends Controller
                 [
                     'token' => $token,
                     'adminAgent' => $agent,
+                    'request' => $request
                 ],
                 function ($message) use ($request) {
                 $message->to($request->email);
