@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\AgentController as AdminAgentController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\PropertyController as AdminPropertyController;
+use App\Http\Controllers\Admin\HeaderController as AdminHeaderController;
+use App\Http\Controllers\Admin\WhyChooseUsController as AdminWhyChooseUsController;
 use App\Http\Controllers\Front\User\AuthController as UserAuthController;
 use App\Http\Controllers\Front\Agent\AuthController as AgentAuthController;
 use App\Http\Controllers\Front\User\DashboardController as UserDahsboardController;
@@ -79,22 +81,6 @@ Route::controller(AgentPropertyController::class)->middleware('agent.auth')->pre
 });
 Route::resource('agent/properties', AgentPropertyController::class)->middleware('agent.auth')->names('agent.properties');
 
-// Front
-Route::controller(FrontController::class)->group(function () {
-    Route::get('/', 'index')->name('home');
-    Route::get('select/user', 'selectUser')->name('select.user');
-    Route::get('user/dashboard', 'userDashboard')->middleware('user.auth')->name('user.dashboard');
-    Route::get('agent/dashboard', 'agentDashboard')->middleware('agent.auth')->name('agent.dashboard');
-    Route::get('pricing', 'pricing')->name('pricing');
-    Route::get('property/{property:slug}', 'property')->name('property.detail');
-    Route::get('properties', 'properties')->name('properties');
-    Route::post('property/inquiry/{property}', 'inquirySubmit')->name('property.inquiry.submit');
-    Route::get('location/{location:slug}', 'location')->name('location.detail');
-    Route::get('locations', 'locations')->name('locations');
-    Route::get('agents', 'agents')->name('agents');
-    Route::get('agent/{agent}', 'agent')->name('agent.detail');
-});
-
 // Admin
 Route::get('admin', [AdminController::class, 'index'])->middleware('admin.auth')->name('admin.panel');
 
@@ -119,6 +105,7 @@ Route::resource('admin/property-types', AdminPropertyTypeController::class)->mid
 Route::resource('admin/amenities', AdminAmenityController::class)->middleware('admin.auth')->except('show')->names('admin.amenities');
 Route::resource('admin/users', AdminUserController::class)->middleware('admin.auth')->except('show')->names('admin.users');
 Route::resource('admin/agents', AdminAgentController::class)->middleware('admin.auth')->names('admin.agents');
+Route::resource('admin/why-choose-us', AdminWhyChooseUsController::class)->middleware('admin.auth')->except('show')->names('admin.why-choose-us')->parameters(['why-choose-us' => 'item']);
 
 Route::post('admin/properties/make-active/{property}', [AdminPropertyController::class, 'makeActive'])->name('admin.properties.make.active');
 Route::delete('admin/properties/photo/{propertyPhoto}', [AdminPropertyController::class, 'destroyPhoto'])->name('admin.properties.photo.destroy');
@@ -128,4 +115,22 @@ Route::resource('admin/properties', AdminPropertyController::class)->middleware(
 Route::controller(AdminOrderController::class)->prefix('admin')->middleware('admin.auth')->group(function () {
     Route::get('orders', 'index')->name('admin.orders');
     Route::get('invoice/{order}', 'invoice')->name('admin.invoice');
+});
+
+Route::singleton('admin/header', AdminHeaderController::class)->middleware('admin.auth')->names('admin.header');
+
+// Front
+Route::controller(FrontController::class)->group(function () {
+    Route::get('/', 'index')->name('home');
+    Route::get('select/user', 'selectUser')->name('select.user');
+    Route::get('user/dashboard', 'userDashboard')->middleware('user.auth')->name('user.dashboard');
+    Route::get('agent/dashboard', 'agentDashboard')->middleware('agent.auth')->name('agent.dashboard');
+    Route::get('pricing', 'pricing')->name('pricing');
+    Route::get('property/{property:slug}', 'property')->name('property.detail');
+    Route::get('properties', 'properties')->name('properties');
+    Route::post('property/inquiry/{property}', 'inquirySubmit')->name('property.inquiry.submit');
+    Route::get('location/{location:slug}', 'location')->name('location.detail');
+    Route::get('locations', 'locations')->name('locations');
+    Route::get('agents', 'agents')->name('agents');
+    Route::get('agent/{agent}', 'agent')->name('agent.detail');
 });

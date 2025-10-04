@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Front;
 
 use App\Models\Plan;
 use App\Models\Agent;
+use App\Models\Header;
 use App\Models\Amenity;
 use App\Models\Location;
 use App\Models\Property;
 use Illuminate\View\View;
+use App\Models\WhyChooseUs;
 use App\Models\PropertyType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -38,12 +40,16 @@ class FrontController extends Controller
             ->inRandomOrder()
             ->take(8)
             ->get();
+        $header = Header::first();
+        $whyChooseUsItems = WhyChooseUs::all();
         return view(
             'front.index',
             compact(
                 'randomProperties',
                 'popularLocations',
                 'agents',
+                'header',
+                'whyChooseUsItems',
             )
         );
     }

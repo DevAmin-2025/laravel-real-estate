@@ -39,6 +39,12 @@
             <li class="{{ request()->routeIs('admin.orders', 'admin.invoice') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('admin.orders') }}"><i class="fas fa-file-invoice"></i> <span>Orders</span></a>
             </li>
+            <li class="{{ request()->routeIs('admin.header.*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('admin.header.show') }}"><i class="fas fa-file"></i> <span>Header</span></a>
+            </li>
+            <li class="{{ request()->routeIs('admin.why-choose-us.*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('admin.why-choose-us.index') }}"><i class="fas fa-question"></i> <span>Why Choose Us</span></a>
+            </li>
         </ul>
     </aside>
 </div>

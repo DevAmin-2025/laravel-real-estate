@@ -1,16 +1,14 @@
 @extends('front.layouts.master')
 @section('content')
-    <div class="slider" style="background-image: url({{ asset('uploads/banner-home.jpg') }})">
+    <div class="slider" style="background-image: url({{ asset('website-images/' . $header->photo) }})">
         <div class="bg"></div>
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
                     <div class="item">
                         <div class="text">
-                            <h2>Discover Your New Home</h2>
-                            <p>
-                                You can get your desired awesome properties, homes, condos etc. here by name, category or location.
-                            </p>
+                            <h2>{{ $header->title }}</h2>
+                            <p>{{ $header->text }}</p>
                         </div>
                         <div class="search-section">
                             <form action="" method="post">
@@ -145,7 +143,7 @@
         </div>
     </div>
 
-    <div class="why-choose" style="background-image: url({{ asset('uploads/why-choose.jpg') }})">
+    <div class="why-choose" style="background-image: url({{ asset('website-images/why-choose.jpg') }})">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -158,45 +156,19 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
-                    <div class="inner">
-                        <div class="icon">
-                            <i class="fas fa-briefcase"></i>
-                        </div>
-                        <div class="text">
-                            <h2>Years of Experience</h2>
-                            <p>
-                                With decades of combined experience in the industry, our agents have the expertise and knowledge to provide you with a seamless home-buying experience.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="inner">
-                        <div class="icon">
-                            <i class="fas fa-search"></i>
-                        </div>
-                        <div class="text">
-                            <h2>Competitive Prices</h2>
-                            <p>
-                                We understand that buying a home is a significant investment, which is why we strive to offer competitive prices to our clients.
-                            </p>
+                @foreach ($whyChooseUsItems as $item)
+                    <div class="col-md-4">
+                        <div class="inner">
+                            <div class="icon">
+                                <i class="{{ $item->icon }}"></i>
+                            </div>
+                            <div class="text">
+                                <h2>{{ $item->title }}</h2>
+                                <p>{{ $item->text }}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="inner">
-                        <div class="icon">
-                            <i class="fas fa-share-alt"></i>
-                        </div>
-                        <div class="text">
-                            <h2>Responsive Communication</h2>
-                            <p>
-                                Our responsive agents are here to answer your questions and address your concerns, ensuring a smooth and stress-free home-buying experience.
-                            </p>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>
@@ -264,7 +236,7 @@
         </div>
     </div>
 
-    <div class="testimonial" style="background-image: url({{ asset('uploads/testimonial-bg.jpg') }})">
+    <div class="testimonial" style="background-image: url({{ asset('website-images/testimonial-bg.jpg') }})">
         <div class="bg"></div>
         <div class="container">
             <div class="row">
