@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\PropertyController as AdminPropertyController;
 use App\Http\Controllers\Admin\HeaderController as AdminHeaderController;
 use App\Http\Controllers\Admin\WhyChooseUsController as AdminWhyChooseUsController;
+use App\Http\Controllers\Admin\TestimonialController as AdminTestimonialController;
 use App\Http\Controllers\Front\User\AuthController as UserAuthController;
 use App\Http\Controllers\Front\User\DashboardController as UserDahsboardController;
 use App\Http\Controllers\Front\User\MessageController as UserMessageController;
@@ -123,6 +124,7 @@ Route::resource('admin/amenities', AdminAmenityController::class)->middleware('a
 Route::resource('admin/users', AdminUserController::class)->middleware('admin.auth')->except('show')->names('admin.users');
 Route::resource('admin/agents', AdminAgentController::class)->middleware('admin.auth')->names('admin.agents');
 Route::resource('admin/why-choose-us', AdminWhyChooseUsController::class)->middleware('admin.auth')->except('show')->names('admin.why-choose-us')->parameters(['why-choose-us' => 'item']);
+Route::resource('admin/testimonial', AdminTestimonialController::class)->middleware('admin.auth')->except('show')->names('admin.testimonial');
 
 Route::post('admin/properties/make-active/{property}', [AdminPropertyController::class, 'makeActive'])->name('admin.properties.make.active');
 Route::delete('admin/properties/photo/{propertyPhoto}', [AdminPropertyController::class, 'destroyPhoto'])->name('admin.properties.photo.destroy');

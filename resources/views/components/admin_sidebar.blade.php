@@ -45,6 +45,9 @@
             <li class="{{ request()->routeIs('admin.why-choose-us.*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('admin.why-choose-us.index') }}"><i class="fas fa-question"></i> <span>Why Choose Us</span></a>
             </li>
+            <li class="{{ request()->routeIs('admin.testimonial.*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('admin.testimonial.index') }}"><i class="fas fa-file"></i> <span>Testimonial</span></a>
+            </li>
         </ul>
     </aside>
 </div>

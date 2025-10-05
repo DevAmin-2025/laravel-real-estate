@@ -247,34 +247,22 @@
             <div class="row">
                 <div class="col-12">
                     <div class="testimonial-carousel owl-carousel">
-                        <div class="item">
-                            <div class="photo">
-                                <img src="uploads/t1.jpg" alt="" />
+                        @foreach ($testimonials as $testimonial)
+                            <div class="item">
+                                <div class="photo">
+                                    <img src="{{ asset('user-images/' . $testimonial->photo) }}" alt="User-image"/>
+                                </div>
+                                <div class="text">
+                                    <h4>{{ $testimonial->name }}</h4>
+                                    <p>{{ $testimonial->designation }}</p>
+                                </div>
+                                <div class="description">
+                                    <p>
+                                        {{ $testimonial->comment }}
+                                    </p>
+                                </div>
                             </div>
-                            <div class="text">
-                                <h4>Robert Krol</h4>
-                                <p>CEO, ABC Company</p>
-                            </div>
-                            <div class="description">
-                                <p>
-                                    I recently worked with Patrick Johnson on purchasing my dream home and I couldn't have asked for a better experience. Patrick Johnson was knowledgeable, professional, and truly cared about finding me the perfect property. They were always available to answer my questions and made the entire process stress-free. I highly recommend Patrick Johnson to anyone looking to buy or sell a property!
-                                </p>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="photo">
-                                <img src="uploads/t2.jpg" alt="" />
-                            </div>
-                            <div class="text">
-                                <h4>Sal Harvey</h4>
-                                <p>Director, DEF Company</p>
-                            </div>
-                            <div class="description">
-                                <p>
-                                    I had the pleasure of working with Smith Brent during my recent home search and I can't speak highly enough of their services. Smith Brent listened to my needs and helped me find the perfect home that met all of my requirements. They were always there for me, from the initial search to closing, and made the process seamless and enjoyable. I would recommend Smith Brent to anyone looking for an experienced and dedicated real estate agent.
-                                </p>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
             </div>

@@ -9,6 +9,7 @@ use App\Models\Amenity;
 use App\Models\Location;
 use App\Models\Property;
 use Illuminate\View\View;
+use App\Models\Testimonial;
 use App\Models\WhyChooseUs;
 use App\Models\PropertyType;
 use Illuminate\Http\Request;
@@ -42,6 +43,7 @@ class FrontController extends Controller
             ->get();
         $header = Header::first();
         $whyChooseUsItems = WhyChooseUs::all();
+        $testimonials = Testimonial::all();
         return view(
             'front.index',
             compact(
@@ -50,6 +52,7 @@ class FrontController extends Controller
                 'agents',
                 'header',
                 'whyChooseUsItems',
+                'testimonials',
             )
         );
     }
