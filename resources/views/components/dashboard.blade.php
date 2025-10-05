@@ -27,8 +27,8 @@
                 <a href="{{ route('agent.properties.create') }}">Add Property</a>
             </li>
         @endunless
-        <li class="list-group-item">
-            <a href="">Messages</a>
+        <li class="list-group-item {{ request()->routeIs('user.messages.*', 'agent.messages.*') ? 'active' : ''}}">
+            <a href="{{ $user ? route('user.messages.index') : route('agent.messages.index') }}">Messages</a>
         </li>
         @if ($user)
             <li class="list-group-item {{ request()->routeIs('user.wishlist') ? 'active' : ''}}">

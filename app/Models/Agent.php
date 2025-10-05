@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Order;
+use App\Models\Message;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -45,5 +46,17 @@ class Agent extends Authenticatable
         if ($value == 0) return 'Inactive';
         if ($value == 1) return 'Active';
         if ($value == 2) return 'Suspended';
+    }
+
+    /**
+     * Get all messages received by this agent.
+     *
+     * Defines a one-to-many relationship where an agent can have multiple associated messages.
+     *
+     * @return HasMany
+     */
+    public function messages(): HasMany
+    {
+        return $this->hasMany(Message::class);
     }
 }

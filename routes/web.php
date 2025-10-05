@@ -16,11 +16,13 @@ use App\Http\Controllers\Admin\PropertyController as AdminPropertyController;
 use App\Http\Controllers\Admin\HeaderController as AdminHeaderController;
 use App\Http\Controllers\Admin\WhyChooseUsController as AdminWhyChooseUsController;
 use App\Http\Controllers\Front\User\AuthController as UserAuthController;
-use App\Http\Controllers\Front\Agent\AuthController as AgentAuthController;
 use App\Http\Controllers\Front\User\DashboardController as UserDahsboardController;
+use App\Http\Controllers\Front\User\MessageController as UserMessageController;
+use App\Http\Controllers\Front\Agent\AuthController as AgentAuthController;
 use App\Http\Controllers\Front\Agent\DashboardController as AgentDahsboardController;
 use App\Http\Controllers\Front\Agent\PaymentController as AgentPaymentController;
 use App\Http\Controllers\Front\Agent\PropertyController as AgentPropertyController;
+use App\Http\Controllers\Front\Agent\MessageController as AgentMessageController;
 
 // User
 Route::controller(UserAuthController::class)->prefix('user')->group(function () {
@@ -42,6 +44,15 @@ Route::controller(UserDahsboardController::class)->prefix('user')->middleware('u
     Route::get('wishlist', 'wishlist')->name('user.wishlist');
     Route::get('add-to-wishlist/{property}', 'addToWishlist')->name('user.add.to.wishlist');
     Route::delete('remove-from-wishlist/{wishlist}', 'removeFromWishlist')->name('user.remove.from.wishlist');
+});
+
+Route::controller(UserMessageController::class)->prefix('user/messages')->middleware('user.auth')->name('user.messages.')->group(function () {
+    Route::get('', 'index')->name('index');
+    Route::get('create', 'create')->name('create');
+    Route::post('create', 'store')->name('store');
+    Route::get('reply/{message}', 'reply')->name('reply');
+    Route::post('reply/{message}', 'submitReply')->name('reply.submit');
+    Route::delete('{message}', 'destroy')->name('destroy');
 });
 
 // Agent
@@ -80,6 +91,12 @@ Route::controller(AgentPropertyController::class)->middleware('agent.auth')->pre
     Route::delete('video-gallery/{propertyVideo}', 'videoGalleryDestroy')->name('agent.video.gallery.destroy');
 });
 Route::resource('agent/properties', AgentPropertyController::class)->middleware('agent.auth')->names('agent.properties');
+
+Route::controller(AgentMessageController::class)->prefix('agent/messages')->middleware('agent.auth')->name('agent.messages.')->group(function () {
+    Route::get('', 'index')->name('index');
+    Route::get('reply/{message}', 'reply')->name('reply');
+    Route::post('reply/{message}', 'submitReply')->name('reply.submit');
+});
 
 // Admin
 Route::get('admin', [AdminController::class, 'index'])->middleware('admin.auth')->name('admin.panel');

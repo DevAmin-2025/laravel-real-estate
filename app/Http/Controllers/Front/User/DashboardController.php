@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Front\User;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Agent;
+use App\Models\Message;
 use App\Models\Property;
 use App\Models\Wishlist;
 use Illuminate\View\View;

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Message;
 use App\Models\Property;
 use App\Models\Wishlist;
 use Illuminate\Notifications\Notifiable;
@@ -79,5 +80,17 @@ class User extends Authenticatable
     public function hasWishlisted(Property $property): bool
     {
         return $this->wishlist->contains('property_id', $property->id);
+    }
+
+    /**
+     * Get all messages sent or received by this user.
+     *
+     * Defines a one-to-many relationship where a user can have multiple associated messages.
+     *
+     * @return HasMany
+     */
+    public function messages(): HasMany
+    {
+        return $this->hasMany(Message::class);
     }
 }
