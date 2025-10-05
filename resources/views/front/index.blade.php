@@ -11,42 +11,31 @@
                             <p>{{ $header->text }}</p>
                         </div>
                         <div class="search-section">
-                            <form action="" method="post">
+                            <form action="{{ route('properties') }}" method="GET">
                                 <div class="inner">
                                     <div class="row">
                                         <div class="col-lg-3">
                                             <div class="form-group">
-                                                <input type="text" name="" class="form-control" placeholder="Find Anything ...">
+                                                <input type="text" name="title" class="form-control" placeholder="Find Anything ...">
                                             </div>
                                         </div>
                                         <div class="col-lg-3">
                                             <div class="form-group">
-                                                <select name="" class="form-select select2">
-                                                    <option value="">Select Location</option>
-                                                    <option value="">Boston</option>
-                                                    <option value="">California</option>
-                                                    <option value="">Chicago</option>
-                                                    <option value="">Dallas</option>
-                                                    <option value="">Denver</option>
-                                                    <option value="">NewYork</option>
-                                                    <option value="">San Diago</option>
-                                                    <option value="">Washington</option>
-                                                    <option value="">Winconsin</option>
+                                                <select name="location_id" class="form-control select2">
+                                                    <option selected disabled>Select Location</option>
+                                                    @foreach ($locations as $location)
+                                                        <option value="{{ $location->id }}">{{ $location->name }}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-lg-3">
                                             <div class="form-group">
-                                                <select name="" class="form-select select2">
-                                                    <option value="">Select Type</option>
-                                                    <option value="">Apartment</option>
-                                                    <option value="">Bungalow</option>
-                                                    <option value="">Cabin</option>
-                                                    <option value="">Condo</option>
-                                                    <option value="">Cottage</option>
-                                                    <option value="">Duplex</option>
-                                                    <option value="">Townhouse</option>
-                                                    <option value="">Villa</option>
+                                                <select name="type_id" class="form-control select2">
+                                                    <option selected disabled>Select Type</option>
+                                                    @foreach ($propertyTypes as $type)
+                                                        <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
@@ -282,75 +271,26 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-4 col-md-6">
-                    <div class="item">
-                        <div class="photo">
-                            <img src="uploads/blog1.jpg" alt="" />
-                        </div>
-                        <div class="text">
-                            <h2>
-                                <a href="post.html">5 Tips for Finding Your Dream Home</a>
-                            </h2>
-                            <div class="short-des">
-                                <p>
-                                    Lorem ipsum dolor sit amet, nibh saperet
-                                    te pri, at nam diceret disputationi. Quo
-                                    an consul impedit, usu possim evertitur
-                                    dissentiet ei.
-                                </p>
+                @foreach ($posts as $post)
+                    <div class="col-lg-4 col-md-6">
+                        <div class="item border rounded">
+                            <div class="photo">
+                                <img src="{{ asset('blog-images/' . $post->photo) }}" alt="Post-image"/>
                             </div>
-                            <div class="button">
-                                <a href="post.html" class="btn btn-primary">Read More</a>
+                            <div class="text p_10">
+                                <h2>
+                                    <a href="{{ route('post', $post->slug) }}">{{ $post->title }}</a>
+                                </h2>
+                                <div class="short-des" style="height: 150px">
+                                    <p>{{ $post->short_description }}</p>
+                                </div>
+                                <div class="button ">
+                                    <a href="{{ route('post', $post->slug) }}" class="btn btn-primary">Read More</a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="item">
-                        <div class="photo">
-                            <img src="uploads/blog2.jpg" alt="" />
-                        </div>
-                        <div class="text">
-                            <h2>
-                                <a href="post.html">Pros & Cons of Renting vs. Buying</a>
-                            </h2>
-                            <div class="short-des">
-                                <p>
-                                    Nec in rebum primis causae. Affert
-                                    iisque ex pri, vis utinam vivendo
-                                    definitionem ad, nostrum omnes que per
-                                    et. Omnium antiopam.
-                                </p>
-                            </div>
-                            <div class="button">
-                                <a href="post.html" class="btn btn-primary">Read More</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="item">
-                        <div class="photo">
-                            <img src="uploads/blog3.jpg" alt="" />
-                        </div>
-                        <div class="text">
-                            <h2>
-                                <a href="post.html">Maximizing Your Investment in 2023</a>
-                            </h2>
-                            <div class="short-des">
-                                <p>
-                                    Id pri placerat voluptatum, vero dicunt
-                                    dissentiunt eum et, adhuc iisque vis no.
-                                    Eu suavitate conten tiones definitionem
-                                    mel, ex vide.
-                                </p>
-                            </div>
-                            <div class="button">
-                                <a href="post.html" class="btn btn-primary">Read More</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>

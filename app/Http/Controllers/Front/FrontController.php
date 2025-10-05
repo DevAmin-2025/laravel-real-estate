@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Models\Blog;
 use App\Models\Plan;
 use App\Models\Agent;
 use App\Models\Header;
@@ -44,6 +45,12 @@ class FrontController extends Controller
         $header = Header::first();
         $whyChooseUsItems = WhyChooseUs::all();
         $testimonials = Testimonial::all();
+        $posts = Blog::latest()
+            ->take(3)
+            ->get();
+        $locations = Location::all();
+        $propertyTypes = PropertyType::all();
+
         return view(
             'front.index',
             compact(
@@ -53,6 +60,9 @@ class FrontController extends Controller
                 'header',
                 'whyChooseUsItems',
                 'testimonials',
+                'posts',
+                'locations',
+                'propertyTypes',
             )
         );
     }
@@ -277,5 +287,27 @@ class FrontController extends Controller
             ->with('propertyType', 'location')
             ->paginate(12);
         return view('front.pages.agent', compact('agent', 'properties'));
+    }
+
+    /**
+     * Display a paginated list of posts.
+     *
+     * @return View
+     */
+    public function blog(): View
+    {
+        $posts = Blog::latest()->paginate(15);
+        return view('front.pages.blog', compact('posts'));
+    }
+
+    /**
+     * Display a single post detail page.
+     *
+     * @param Blog $blog
+     * @return View
+     */
+    public function post(Blog $blog): View
+    {
+        return view('front.pages.post', ['post' => $blog]);
     }
 }

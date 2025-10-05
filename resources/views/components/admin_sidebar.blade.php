@@ -48,6 +48,9 @@
             <li class="{{ request()->routeIs('admin.testimonial.*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('admin.testimonial.index') }}"><i class="fas fa-file"></i> <span>Testimonial</span></a>
             </li>
+            <li class="{{ request()->routeIs('admin.blog.*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('admin.blog.index') }}"><i class="fas fa-blog"></i> <span>Blog</span></a>
+            </li>
         </ul>
     </aside>
 </div>
