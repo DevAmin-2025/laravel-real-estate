@@ -19,6 +19,8 @@ use App\Http\Controllers\Admin\TestimonialController as AdminTestimonialControll
 use App\Http\Controllers\Admin\BlogController as AdminBlogController;
 use App\Http\Controllers\Admin\FaqController as AdminFaqController;
 use App\Http\Controllers\Admin\SubscriberController as AdminSubscriberController;
+use App\Http\Controllers\Admin\TermController as AdminTermController;
+use App\Http\Controllers\Admin\PrivacyPolicyController as AdminPrivacyPolicyController;
 use App\Http\Controllers\Front\User\AuthController as UserAuthController;
 use App\Http\Controllers\Front\User\DashboardController as UserDahsboardController;
 use App\Http\Controllers\Front\User\MessageController as UserMessageController;
@@ -145,6 +147,8 @@ Route::controller(AdminOrderController::class)->prefix('admin')->middleware('adm
 });
 
 Route::singleton('admin/header', AdminHeaderController::class)->middleware('admin.auth')->names('admin.header');
+Route::singleton('admin/terms', AdminTermController::class)->middleware('admin.auth')->names('admin.terms');
+Route::singleton('admin/privacy-policy', AdminPrivacyPolicyController::class)->middleware('admin.auth')->names('admin.privacy-policy');
 
 // Front
 Route::controller(FrontController::class)->group(function () {
@@ -165,4 +169,9 @@ Route::controller(FrontController::class)->group(function () {
     Route::get('faq', 'faq')->name('faq');
     Route::get('subscribe/{token}', 'subscribeVerify')->name('subscribe.verify');
     Route::post('subscribe', 'subscribe')->name('subscribe');
+    Route::get('contact', 'contact')->name('contact');
+    Route::post('contact', 'contactSubmit')->name('contact.submit');
+    Route::get('terms', 'terms')->name('terms');
+    Route::get('privacy-policy', 'privacy')->name('privacy.policy');
+
 });

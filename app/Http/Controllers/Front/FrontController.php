@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Front;
 use App\Models\Faq;
 use App\Models\Blog;
 use App\Models\Plan;
+use App\Models\Term;
+use App\Models\Admin;
 use App\Models\Agent;
 use App\Models\Header;
 use App\Models\Amenity;
@@ -17,6 +19,7 @@ use App\Models\WhyChooseUs;
 use Illuminate\Support\Str;
 use App\Models\PropertyType;
 use Illuminate\Http\Request;
+use App\Models\PrivacyPolicy;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -405,5 +408,66 @@ class FrontController extends Controller
             'status' => 1
         ]);
         return redirect()->route('home')->with('success', 'Subscription Verified.');
+    }
+
+    /**
+     * Display the contact us page.
+     *
+     * @return View
+     */
+    public function contact(): View
+    {
+        return view('front.pages.contact');
+    }
+
+    /**
+     * Handle contact form submission.
+     *
+     * Validates the incoming request for name, email, and message fields.
+     * Sends the message content to the admin's email using the contact_us Blade template.
+     *
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function contactSubmit(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'message' => 'required|string|min:10',
+        ]);
+
+        $admin = Admin::first();
+        try {
+            Mail::send('email.contact_us', ['request' => $request], function ($message) use ($admin) {
+                $message->to($admin->email);
+                $message->subject('Contact-Us Message');
+            });
+            return back()->with('success', 'Message sent successfully. We\'ll answer you shortly.');
+        } catch (\Exception) {
+            return back()->with('error', 'Failed to send the message. Please try again later.');
+        };
+    }
+
+    /**
+     * Display the Terms of Use page on the frontend.
+     *
+     * @return View
+     */
+    public function terms(): View
+    {
+        $terms = Term::first();
+        return view('front.pages.terms', compact('terms'));
+    }
+
+    /**
+     * Display the Privacy Policy page on the frontend.
+     *
+     * @return View
+     */
+    public function privacy(): View
+    {
+        $policies = PrivacyPolicy::first();
+        return view('front.pages.privacy', compact('policies'));
     }
 }

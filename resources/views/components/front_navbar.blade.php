@@ -37,7 +37,7 @@
                             <a href="{{ route('blog') }}" class="nav-link {{ request()->routeIs('blog') ? 'active' : ''}}">Blog</a>
                         </li>
                         <li class="nav-item">
-                            <a href="contact.html" class="nav-link">Contact</a>
+                            <a href="{{ route('contact') }}" class="nav-link {{ request()->routeIs('contact') ? 'active' : ''}}">Contact</a>
                         </li>
                         @if (Auth::guard('web')->check())
                             <li class="nav-item">

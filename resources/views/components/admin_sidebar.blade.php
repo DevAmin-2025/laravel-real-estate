@@ -57,6 +57,12 @@
             <li class="{{ request()->routeIs('admin.subscribers.*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('admin.subscribers.index') }}"><i class="fas fa-users"></i> <span>Subscribers</span></a>
             </li>
+            <li class="{{ request()->routeIs('admin.terms.*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('admin.terms.show') }}"><i class="fas fa-gavel"></i> <span>Terms of Use</span></a>
+            </li>
+            <li class="{{ request()->routeIs('admin.privacy-policy.*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('admin.privacy-policy.show') }}"><i class="fas fa-shield-alt"></i> <span>Privacy Policy</span></a>
+            </li>
         </ul>
     </aside>
 </div>
