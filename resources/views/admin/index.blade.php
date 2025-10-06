@@ -18,7 +18,7 @@
                                 <h4>Total Packages</h4>
                             </div>
                             <div class="card-body">
-                                4
+                                {{ $totalPackages }}
                             </div>
                         </div>
                     </div>
@@ -33,7 +33,7 @@
                                 <h4>Total News</h4>
                             </div>
                             <div class="card-body">
-                                4
+                                {{ $postCount }}
                             </div>
                         </div>
                     </div>
@@ -48,7 +48,7 @@
                                 <h4>Total Users</h4>
                             </div>
                             <div class="card-body">
-                                4
+                                {{ $totalUsers }}
                             </div>
                         </div>
                     </div>
@@ -63,7 +63,7 @@
                                 <h4>Total Orders</h4>
                             </div>
                             <div class="card-body">
-                                4
+                                {{ $totalOrders }}
                             </div>
                         </div>
                     </div>
@@ -78,7 +78,7 @@
                                 <h4>Total Properties</h4>
                             </div>
                             <div class="card-body">
-                                4
+                                {{ $totalProperties }}
                             </div>
                         </div>
                     </div>
@@ -93,7 +93,7 @@
                                 <h4>Total Newsletter Subscriber</h4>
                             </div>
                             <div class="card-body">
-                                4
+                                {{ $totalSubscribers }}
                             </div>
                         </div>
                     </div>

@@ -18,68 +18,50 @@
                     <x-dashboard/>
                 </div>
                 <div class="col-lg-9 col-md-12">
-                    <h3>Hello, {{ $user->name }}</h3>
+                    <h3>Hello {{ $user->name }}</h3>
                     <p>See all the statistics at a glance:</p>
 
                     <div class="row box-items">
                         <div class="col-md-4">
                             <div class="box1">
-                                <h4>12</h4>
-                                <p>Active Properties</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="box2">
-                                <h4>3</h4>
-                                <p>Pending Properties</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="box3">
-                                <h4>5</h4>
-                                <p>Featured Properties</p>
+                                <h4>{{ $messageCount }}</h4>
+                                <p>Messages</p>
                             </div>
                         </div>
                     </div>
 
-                    <h3 class="mt-5">Recent Properties</h3>
+                    <h3 class="mt-5">Properties You recently liked</h3>
                     <div class="table-responsive">
-                        <table class="table table-bordered">
+                        <table class="table table-bordered text-center align-middle">
                             <tbody>
                                 <tr>
                                     <th>SL</th>
+                                    <th>Photo</th>
                                     <th>Name</th>
-                                    <th>Category</th>
-                                    <th>Location</th>
-                                    <th>Status</th>
+                                    <th>Price</th>
                                     <th>Action</th>
                                 </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>1375 Stanley Avenue</td>
-                                    <td>Villa</td>
-                                    <td>New York</td>
-                                    <td>
-                                        <span class="badge bg-success">Active</span>
-                                    </td>
-                                    <td>
-                                        <a href="" class="btn btn-warning btn-sm text-white"><i class="fas fa-edit"></i></a>
-                                        <a href="" class="btn btn-danger btn-sm" onClick="return confirm('Are you sure?');"><i class="fas fa-trash-alt"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>3780 Ash Avenue</td>
-                                    <td>Condo</td>
-                                    <td>Boston</td>
-                                    <td>
-                                        <span class="badge bg-danger">Pending</span>
-                                    </td>
-                                    <td>
-                                        <a href="" class="btn btn-warning btn-sm text-white"><i class="fas fa-edit"></i></a>
-                                        <a href="" class="btn btn-danger btn-sm" onClick="return confirm('Are you sure?');"><i class="fas fa-trash-alt"></i></a>
-                                    </td>
-                                </tr>
+                                @foreach ($wishlistItems as $wishlistItem)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>
+                                            <img src="{{ asset('property-images/' . $wishlistItem->property->featured_photo)}}" class="w-150" alt="Property-image">
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('property.detail', $wishlistItem->property->slug) }}" style="color: inherit;">{{ $wishlistItem->property->name }}</a>
+                                        </td>
+                                        <td>${{ number_format($wishlistItem->property->price) }}</td>
+                                        <td>
+                                            <form action="{{ route('user.remove.from.wishlist', $wishlistItem) }}" method="POST" style="display: inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

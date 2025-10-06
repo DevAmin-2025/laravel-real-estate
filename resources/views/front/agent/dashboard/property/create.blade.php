@@ -53,7 +53,7 @@
                                 <select name="location_id" class="form-control select2">
                                     <option selected disabled>--- Select ---</option>
                                     @foreach ($locations as $location)
-                                        <option value="{{ $location->id }}">{{ $location->name }}</option>
+                                        <option value="{{ $location->id }}" @selected(old('location_id') == $location->id)>{{ $location->name }}</option>
                                     @endforeach
                                 </select>
                                 @error('location_id')
@@ -65,7 +65,7 @@
                                 <select name="type_id" class="form-control select2">
                                     <option selected disabled>--- Select ---</option>
                                     @foreach ($propertyTypes as $propertyType)
-                                        <option value="{{ $propertyType->id }}">{{ $propertyType->name }}</option>
+                                        <option value="{{ $propertyType->id }}" @selected(old('type_id') == $propertyType->id)>{{ $propertyType->name }}</option>
                                     @endforeach
                                 </select>
                                 @error('type_id')
@@ -76,8 +76,8 @@
                                 <label for="" class="form-label">Purpose *</label>
                                 <select name="purpose" class="form-control select2">
                                     <option selected disabled>--- Select ---</option>
-                                    <option value="for sale">For Sale</option>
-                                    <option value="for rent">For Rent</option>
+                                    <option value="for sale" @selected(old('purpose') == 'for sale')>For Sale</option>
+                                    <option value="for rent" @selected(old('purpose') == 'for rent')>For Rent</option>
                                 </select>
                                 @error('purpose')
                                     <small class="text-danger">{{ $message }}</small>
@@ -86,9 +86,8 @@
                             <div class="col-md-4 mb-3">
                                 <label for="" class="form-label">Bedrooms *</label>
                                 <select name="bedroom" class="form-control select2">
-                                    <option selected disabled>--- Select ---</option>
                                     @for ($i = 0; $i <= 10; $i++)
-                                        <option value="{{ $i }}">{{ $i }}</option>
+                                        <option value="{{ $i }}" @selected(old('bedroom') == $i)>{{ $i }}</option>
                                     @endfor
                                 </select>
                                 @error('bedroom')
@@ -98,9 +97,8 @@
                             <div class="col-md-4 mb-3">
                                 <label for="" class="form-label">Bathrooms *</label>
                                 <select name="bathroom" class="form-control select2">
-                                    <option selected disabled>--- Select ---</option>
                                     @for ($i = 0; $i <= 10; $i++)
-                                        <option value="{{ $i }}">{{ $i }}</option>
+                                        <option value="{{ $i }}" @selected(old('bathroom') == $i)>{{ $i }}</option>
                                     @endfor
                                 </select>
                                 @error('bathroom')
@@ -152,9 +150,8 @@
                             <div class="col-md-4 mb-3">
                                 <label for="" class="form-label">Is Featured? *</label>
                                 <select name="is_featured" class="form-control select2">
-                                    <option selected disabled>--- Select ---</option>
-                                    <option value="0" @disabled($agentProperties >= $allowedProperties)>No</option>
-                                    <option value="1" @disabled($agentFeaturedProperties >= $allowedFeaturedProperties)>Yes</option>
+                                    <option value="0" @selected(old('is_featured') == 0) @disabled($agentProperties >= $allowedProperties)>No</option>
+                                    <option value="1" @selected(old('is_featured') == 1) @disabled($agentFeaturedProperties >= $allowedFeaturedProperties)>Yes</option>
                                 </select>
                                 @error('is_featured')
                                     <small class="text-danger">{{ $message }}</small>
@@ -174,7 +171,7 @@
                                         @foreach ($amenities as $amenity)
                                             <div class="col-md-3">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="amenities[]" value="{{ $amenity->id }}" id="{{ $amenity->id }}">
+                                                    <input class="form-check-input" type="checkbox" name="amenities[]" value="{{ $amenity->id }}" id="{{ $amenity->id }}" @checked(in_array($amenity->id, old('amenities', [])))>
                                                     <label class="form-check-label" for="{{ $amenity->id }}">
                                                         {{ $amenity->name }}
                                                     </label>

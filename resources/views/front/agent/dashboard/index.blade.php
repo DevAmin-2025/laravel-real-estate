@@ -24,19 +24,19 @@
                     <div class="row box-items">
                         <div class="col-md-4">
                             <div class="box1">
-                                <h4>4</h4>
+                                <h4>{{ $totalActiveProperties }}</h4>
                                 <p>Active Properties</p>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="box2">
-                                <h4>3</h4>
+                                <h4>{{ $totalPendingProperties }}</h4>
                                 <p>Pending Properties</p>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="box3">
-                                <h4>3</h4>
+                                <h4>{{ $totalFeaturedProperties }}</h4>
                                 <p>Featured Properties</p>
                             </div>
                         </div>
@@ -44,7 +44,7 @@
 
                     <h3 class="mt-5">Recent Properties</h3>
                     <div class="table-responsive">
-                        <table class="table table-bordered">
+                        <table class="table table-bordered text-center align-middle">
                             <tbody>
                                 <tr>
                                     <th>SL</th>
@@ -54,32 +54,27 @@
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>1375 Stanley Avenue</td>
-                                    <td>Villa</td>
-                                    <td>New York</td>
-                                    <td>
-                                        <span class="badge bg-success">Active</span>
-                                    </td>
-                                    <td>
-                                        <a href="" class="btn btn-warning btn-sm text-white"><i class="fas fa-edit"></i></a>
-                                        <a href="" class="btn btn-danger btn-sm" onClick="return confirm('Are you sure?');"><i class="fas fa-trash-alt"></i></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>3780 Ash Avenue</td>
-                                    <td>Condo</td>
-                                    <td>Boston</td>
-                                    <td>
-                                        <span class="badge bg-danger">Pending</span>
-                                    </td>
-                                    <td>
-                                        <a href="" class="btn btn-warning btn-sm text-white"><i class="fas fa-edit"></i></a>
-                                        <a href="" class="btn btn-danger btn-sm" onClick="return confirm('Are you sure?');"><i class="fas fa-trash-alt"></i></a>
-                                    </td>
-                                </tr>
+                                @foreach ($recentProperties as $property)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $property->name }}</td>
+                                        <td>{{ $property->propertyType->name }}</td>
+                                        <td>{{ $property->location->name }}</td>
+                                        <td>
+                                            <span class="badge {{ displayIcon($property->status, 'bg-success', 'bg-danger') }}">{{ $property->status ? 'Active' : 'Pending' }}</span>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('agent.properties.edit', $property) }}" class="btn btn-warning btn-sm text-white"><i class="fas fa-edit"></i></a>
+                                            <form action="{{ route('agent.properties.destroy', $property) }}" method="POST" style="display: inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?');">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

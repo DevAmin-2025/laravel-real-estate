@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Order;
 use App\Models\Message;
+use App\Models\Property;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -58,5 +59,19 @@ class Agent extends Authenticatable
     public function messages(): HasMany
     {
         return $this->hasMany(Message::class);
+    }
+
+
+    /**
+     * Get all properties associated with the agent.
+     *
+     * Defines a one-to-many relationship between Agent and Property.
+     * Each agent can have multiple properties listed under their account.
+     *
+     * @return HasMany
+     */
+    public function properties(): HasMany
+    {
+        return $this->hasMany(Property::class);
     }
 }

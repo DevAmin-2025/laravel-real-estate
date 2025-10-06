@@ -10,8 +10,10 @@ use App\Models\Admin;
 use App\Models\Agent;
 use App\Models\Header;
 use App\Models\Amenity;
+use App\Models\Message;
 use App\Models\Location;
 use App\Models\Property;
+use App\Models\Wishlist;
 use Illuminate\View\View;
 use App\Models\Subscriber;
 use App\Models\Testimonial;
@@ -93,7 +95,13 @@ class FrontController extends Controller
     public function userDashboard(): View
     {
         $user = Auth::guard('web')->user();
-        return view('front.user.dashboard.index', compact('user'));
+        $messageCount = Message::where('user_id', $user->id)->count();
+        $wishlistItems = Wishlist::where('user_id', $user->id)
+            ->with('property')
+            ->latest()
+            ->take(3)
+            ->get();
+        return view('front.user.dashboard.index', compact('user', 'messageCount', 'wishlistItems'));
     }
 
     /**
@@ -104,7 +112,24 @@ class FrontController extends Controller
     public function agentDashboard(): View
     {
         $agent = Auth::guard('agent')->user();
-        return view('front.agent.dashboard.index', compact('agent'));
+        $totalActiveProperties = $agent->properties()->where('status', 1)->count();
+        $totalPendingProperties = $agent->properties()->where('status', 0)->count();
+        $totalFeaturedProperties = $agent->properties()->where('is_featured', 1)->count();
+        $recentProperties = Property::where('agent_id', $agent->id)
+            ->orderBy('created_at', 'desc')
+            ->take(3)
+            ->with('propertyType', 'location')
+            ->get();
+        return view(
+            'front.agent.dashboard.index',
+            compact(
+                'agent',
+                'totalActiveProperties',
+                'totalPendingProperties',
+                'totalFeaturedProperties',
+                'recentProperties',
+                )
+        );
     }
 
     /**
