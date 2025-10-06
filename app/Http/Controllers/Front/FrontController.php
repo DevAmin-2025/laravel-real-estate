@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Models\Faq;
 use App\Models\Blog;
 use App\Models\Plan;
 use App\Models\Agent;
@@ -10,14 +11,18 @@ use App\Models\Amenity;
 use App\Models\Location;
 use App\Models\Property;
 use Illuminate\View\View;
+use App\Models\Subscriber;
 use App\Models\Testimonial;
 use App\Models\WhyChooseUs;
+use Illuminate\Support\Str;
 use App\Models\PropertyType;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Validator;
 
 class FrontController extends Controller
 {
@@ -309,5 +314,96 @@ class FrontController extends Controller
     public function post(Blog $blog): View
     {
         return view('front.pages.post', ['post' => $blog]);
+    }
+
+    /**
+     * Display the FAQ page with all published FAQs.
+     *
+     * Retrieves all FAQ records from the database and passes them to the
+     * front.pages.faq Blade view for rendering.
+     *
+     * @return View
+     */
+    public function faq(): View
+    {
+        $faqs = Faq::all();
+        return view('front.pages.faq', compact('faqs'));
+    }
+
+    /**
+     * Handle AJAX subscription form submission.
+     *
+     * Validates the submitted email, ensures it's unique, and creates a new subscriber record
+     * with a verification token. Sends a confirmation email to the user with a verification link.
+     * If email sending fails, the subscriber record is rolled back.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function subscribe(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|unique:subscribers,email',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'code'=> 0,
+                    'error_message'=> $validator->errors()->toArray(),
+                ]
+            );
+        }
+
+        $token = Str::random(64);
+        $subscriber = Subscriber::create([
+            'email' => $request->email,
+            'token' => $token,
+        ]);
+
+        try {
+            Mail::send('email.subscriber', ['token' => $token], function ($message) use ($request) {
+                $message->to($request->email);
+                $message->subject('Subscription Verification');
+            });
+            return response()->json(
+                [
+                    'code'=> 1,
+                    'success_message'=> 'Please check your email to confirm subscription',
+                ]
+            );
+        } catch (\Exception) {
+            $subscriber->delete();
+            return response()->json(
+                [
+                    'code'=> 0,
+                    'error_message'=> 'Failed to send verification email. Please try again later.',
+                ]
+            );
+        };
+    }
+
+    /**
+     * Verify a subscriber using the provided token.
+     *
+     * Looks up the subscriber by token. If found, marks the subscription as verified
+     * by clearing the token and setting the status to active. Redirects to the homepage
+     * with a success or error message.
+     *
+     * @param string $token
+     * @return RedirectResponse
+     */
+    public function subscribeVerify(string $token): RedirectResponse
+    {
+        $subscriber = Subscriber::where('token', $token)->first();
+        if (!$subscriber) {
+            return redirect()->route('home')->with('error', 'Subscription not Verified.');
+        };
+
+        $subscriber->update([
+            'token' => '',
+            'status' => 1
+        ]);
+        return redirect()->route('home')->with('success', 'Subscription Verified.');
     }
 }

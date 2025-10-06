@@ -51,6 +51,12 @@
             <li class="{{ request()->routeIs('admin.blog.*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('admin.blog.index') }}"><i class="fas fa-blog"></i> <span>Blog</span></a>
             </li>
+            <li class="{{ request()->routeIs('admin.faq.*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('admin.faq.index') }}"><i class="fas fa-lightbulb"></i> <span>FAQ</span></a>
+            </li>
+            <li class="{{ request()->routeIs('admin.subscribers.*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('admin.subscribers.index') }}"><i class="fas fa-users"></i> <span>Subscribers</span></a>
+            </li>
         </ul>
     </aside>
 </div>

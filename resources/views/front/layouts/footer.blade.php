@@ -23,7 +23,6 @@
                     </ul>
                 </div>
             </div>
-
             <div class="col-lg-3 col-md-6">
                 <div class="item">
                     <h2 class="heading">Contact</h2>
@@ -66,7 +65,6 @@
                     </ul>
                 </div>
             </div>
-
             <div class="col-lg-3 col-md-6">
                 <div class="item">
                     <h2 class="heading">Newsletter</h2>
@@ -74,9 +72,11 @@
                         To get the latest news from our website, please
                         subscribe us here:
                     </p>
-                    <form action="" method="post">
+                    <form action="{{ route('subscribe') }}" method="POST" class="form_subscribe_ajax">
+                        @csrf
                         <div class="form-group">
-                            <input type="text" name="" class="form-control">
+                            <input type="text" name="email" class="form-control" placeholder="Your Email Address">
+                            <span class="text-danger error-text email_error"></span>
                         </div>
                         <div class="form-group">
                             <input type="submit" class="btn btn-primary" value="Subscribe Now">
@@ -113,6 +113,7 @@
 <div class="scroll-top">
     <i class="fas fa-angle-up"></i>
 </div>
+<div id="loader"></div>
 
 <script src="{{ asset('dist-front/js/custom.js') }}"></script>
 <script src="{{ asset('dist-admin/js/iziToast.min.js') }}"></script>

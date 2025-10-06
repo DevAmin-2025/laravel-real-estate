@@ -17,6 +17,8 @@ use App\Http\Controllers\Admin\HeaderController as AdminHeaderController;
 use App\Http\Controllers\Admin\WhyChooseUsController as AdminWhyChooseUsController;
 use App\Http\Controllers\Admin\TestimonialController as AdminTestimonialController;
 use App\Http\Controllers\Admin\BlogController as AdminBlogController;
+use App\Http\Controllers\Admin\FaqController as AdminFaqController;
+use App\Http\Controllers\Admin\SubscriberController as AdminSubscriberController;
 use App\Http\Controllers\Front\User\AuthController as UserAuthController;
 use App\Http\Controllers\Front\User\DashboardController as UserDahsboardController;
 use App\Http\Controllers\Front\User\MessageController as UserMessageController;
@@ -127,11 +129,15 @@ Route::resource('admin/agents', AdminAgentController::class)->middleware('admin.
 Route::resource('admin/why-choose-us', AdminWhyChooseUsController::class)->middleware('admin.auth')->except('show')->names('admin.why-choose-us')->parameters(['why-choose-us' => 'item']);
 Route::resource('admin/testimonial', AdminTestimonialController::class)->middleware('admin.auth')->except('show')->names('admin.testimonial');
 Route::resource('admin/blog', AdminBlogController::class)->middleware('admin.auth')->names('admin.blog');
+Route::resource('admin/faq', AdminFaqController::class)->middleware('admin.auth')->names('admin.faq');
 
 Route::post('admin/properties/make-active/{property}', [AdminPropertyController::class, 'makeActive'])->name('admin.properties.make.active');
 Route::delete('admin/properties/photo/{propertyPhoto}', [AdminPropertyController::class, 'destroyPhoto'])->name('admin.properties.photo.destroy');
 Route::delete('admin/properties/video/{propertyVideo}', [AdminPropertyController::class, 'destroyVideo'])->name('admin.properties.video.destroy');
 Route::resource('admin/properties', AdminPropertyController::class)->middleware('admin.auth')->except(['create', 'store'])->names('admin.properties');
+
+Route::get('admin/subscribers/export', [AdminSubscriberController::class, 'export'])->name('admin.subscribers.export');
+Route::resource('admin/subscribers', AdminSubscriberController::class)->middleware('admin.auth')->except(['show', 'edit', 'update'])->names('admin.subscribers');
 
 Route::controller(AdminOrderController::class)->prefix('admin')->middleware('admin.auth')->group(function () {
     Route::get('orders', 'index')->name('admin.orders');
@@ -156,4 +162,7 @@ Route::controller(FrontController::class)->group(function () {
     Route::get('agent/{agent}', 'agent')->name('agent.detail');
     Route::get('blog', 'blog')->name('blog');
     Route::get('post/{blog:slug}', 'post')->name('post');
+    Route::get('faq', 'faq')->name('faq');
+    Route::get('subscribe/{token}', 'subscribeVerify')->name('subscribe.verify');
+    Route::post('subscribe', 'subscribe')->name('subscribe');
 });
