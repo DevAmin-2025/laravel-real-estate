@@ -21,6 +21,8 @@ use App\Http\Controllers\Admin\FaqController as AdminFaqController;
 use App\Http\Controllers\Admin\SubscriberController as AdminSubscriberController;
 use App\Http\Controllers\Admin\TermController as AdminTermController;
 use App\Http\Controllers\Admin\PrivacyPolicyController as AdminPrivacyPolicyController;
+use App\Http\Controllers\Admin\SettingController as AdminSettingController;
+use App\Http\Controllers\Admin\FooterController as AdminFooterController;
 use App\Http\Controllers\Front\User\AuthController as UserAuthController;
 use App\Http\Controllers\Front\User\DashboardController as UserDahsboardController;
 use App\Http\Controllers\Front\User\MessageController as UserMessageController;
@@ -149,6 +151,8 @@ Route::controller(AdminOrderController::class)->prefix('admin')->middleware('adm
 Route::singleton('admin/header', AdminHeaderController::class)->middleware('admin.auth')->names('admin.header');
 Route::singleton('admin/terms', AdminTermController::class)->middleware('admin.auth')->names('admin.terms');
 Route::singleton('admin/privacy-policy', AdminPrivacyPolicyController::class)->middleware('admin.auth')->names('admin.privacy-policy');
+Route::singleton('admin/settings', AdminSettingController::class)->middleware('admin.auth')->except('edit')->names('admin.settings');
+Route::singleton('admin/footer', AdminFooterController::class)->middleware('admin.auth')->names('admin.footer');
 
 // Front
 Route::controller(FrontController::class)->group(function () {

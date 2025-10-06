@@ -5,21 +5,27 @@
                 <div class="item">
                     <h2 class="heading">Important Links</h2>
                     <ul class="useful-links">
-                        <li><a href="">Home</a></li>
-                        <li><a href="">Properties</a></li>
-                        <li><a href="">Agents</a></li>
-                        <li><a href="">Blog</a></li>
+                        <li><a href="{{ route('pricing') }}">Pricing</a></li>
+                        <li><a href="{{ route('properties') }}">Properties</a></li>
+                        <li><a href="{{ route('agents') }}">Agents</a></li>
+                        <li><a href="{{ route('blog') }}">Blog</a></li>
                     </ul>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
+                @php
+                    $popularLocations = App\Models\Location::withCount([
+                        'properties' => function ($query) {
+                            $query->where('status', 1);
+                        }
+                    ])->orderByDesc('properties_count')->take(4)->get();
+                @endphp
                 <div class="item">
-                    <h2 class="heading">Locations</h2>
+                    <h2 class="heading">Popular Locations</h2>
                     <ul class="useful-links">
-                        <li><a href="">New York</a></li>
-                        <li><a href="">Boston</a></li>
-                        <li><a href="">Orlanco</a></li>
-                        <li><a href="">Los Angeles</a></li>
+                        @foreach ($popularLocations as $location)
+                            <li><a href="{{ route('location.detail', $location->slug) }}">{{ $location->name }}</a></li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
@@ -31,37 +37,42 @@
                             <i class="fas fa-map-marker-alt"></i>
                         </div>
                         <div class="right">
-                            34 Antiger Lane, USA, 12937
+                            {{ $footer->address }}
                         </div>
                     </div>
                     <div class="list-item">
                         <div class="left">
                             <i class="fas fa-phone"></i>
                         </div>
-                        <div class="right">contact@arefindev.com</div>
+                        <div class="right">{{ $footer->phone }}</div>
                     </div>
                     <div class="list-item">
                         <div class="left">
                             <i class="fas fa-envelope"></i>
                         </div>
-                        <div class="right">122-222-1212</div>
+                        <div class="right">{{ $footer->email }}</div>
                     </div>
                     <ul class="social">
-                        <li>
-                            <a href=""><i class="fab fa-facebook-f"></i></a>
-                        </li>
-                        <li>
-                            <a href=""><i class="fab fa-twitter"></i></a>
-                        </li>
-                        <li>
-                            <a href=""><i class="fab fa-pinterest-p"></i></a>
-                        </li>
-                        <li>
-                            <a href=""><i class="fab fa-linkedin-in"></i></a>
-                        </li>
-                        <li>
-                            <a href=""><i class="fab fa-instagram"></i></a>
-                        </li>
+                        @if ($footer->facebook)
+                            <li>
+                                <a href="{{ $footer->facebook }}"><i class="fab fa-facebook-f"></i></a>
+                            </li>
+                        @endif
+                        @if ($footer->twitter)
+                            <li>
+                                <a href="{{ $footer->twitter }}"><i class="fab fa-twitter"></i></a>
+                            </li>
+                        @endif
+                        @if ($footer->linkedin)
+                            <li>
+                                <a href="{{ $footer->linkedin }}"><i class="fab fa-linkedin-in"></i></a>
+                            </li>
+                        @endif
+                        @if ($footer->instagram)
+                            <li>
+                                <a href="{{ $footer->instagram }}"><i class="fab fa-instagram"></i></a>
+                            </li>
+                        @endif
                     </ul>
                 </div>
             </div>
@@ -93,7 +104,7 @@
         <div class="row">
             <div class="col-lg-6 col-md-6">
                 <div class="copyright">
-                    Copyright 2023, ArefinDev. All Rights Reserved.
+                    {{ $footer->copyright }}
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">

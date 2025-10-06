@@ -63,6 +63,12 @@
             <li class="{{ request()->routeIs('admin.privacy-policy.*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('admin.privacy-policy.show') }}"><i class="fas fa-shield-alt"></i> <span>Privacy Policy</span></a>
             </li>
+            <li class="{{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('admin.settings.show') }}"><i class="fas fa-cog"></i> <span>Setting</span></a>
+            </li>
+            <li class="{{ request()->routeIs('admin.footer.*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('admin.footer.show') }}"><i class="fas fa-th-large"></i> <span>Footer</span></a>
+            </li>
         </ul>
     </aside>
 </div>
