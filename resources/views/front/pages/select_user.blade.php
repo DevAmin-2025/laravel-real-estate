@@ -1,6 +1,6 @@
 @extends('front.layouts.master')
 @section('content')
-    <div class="page-top" style="background-image: url({{ asset('uploads/banner.jpg') }})">
+    <div class="page-top" style="background-image: url({{ asset('website-images/' . $setting->banner) }})">
         <div class="bg"></div>
         <div class="container">
             <div class="row">
@@ -13,7 +13,6 @@
     <div class="page-content">
         <div class="container">
             <div class="row justify-content-center">
-                <!-- Customer Card -->
                 <div class="col-md-5 mb-4">
                     <div class="card shadow-sm h-100 text-center">
                         <div class="card-body d-flex flex-column justify-content-center">
@@ -24,8 +23,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Agent Card -->
                 <div class="col-md-5 mb-4">
                     <div class="card shadow-sm h-100 text-center">
                         <div class="card-body d-flex flex-column justify-content-center">

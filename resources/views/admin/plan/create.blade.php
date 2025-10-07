@@ -20,7 +20,7 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group mb-3">
-                                                <label>Name *</label>
+                                                <label class="form-label">Name *</label>
                                                 <input type="text" class="form-control" name="name" value="{{ old('name') }}">
                                                 @error('name')
                                                     <small class="text-danger">{{ $message }}</small>
@@ -29,7 +29,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group mb-3">
-                                                <label>Price *</label>
+                                                <label class="form-label">Price *</label>
                                                 <input type="text" class="form-control" name="price" value="{{ old('price') }}">
                                                 @error('price')
                                                     <small class="text-danger">{{ $message }}</small>
@@ -40,7 +40,7 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group mb-3">
-                                                <label>Allowed Days *</label>
+                                                <label class="form-label">Allowed Days *</label>
                                                 <input type="text" class="form-control" name="allowed_days" value="{{ old('allowed_days') }}">
                                                 @error('allowed_days')
                                                    <small class="text-danger">{{ $message }}</small>
@@ -49,7 +49,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group mb-3">
-                                                <label>Allowed Properties *</label>
+                                                <label class="form-label">Allowed Properties *</label>
                                                 <input type="text" class="form-control" name="allowed_properties" value="{{ old('allowed_properties') }}">
                                                 @error('allowed_properties')
                                                     <small class="text-danger">{{ $message }}</small>
@@ -60,7 +60,7 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group mb-3">
-                                                <label>Allowed Featured Properties *</label>
+                                                <label class="form-label">Allowed Featured Properties *</label>
                                                 <input type="text" class="form-control" name="allowed_featured_properties" value="{{ old('allowed_featured_properties') }}">
                                                 @error('allowed_featured_properties')
                                                     <small class="text-danger">{{ $message }}</small>
@@ -69,7 +69,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group mb-3">
-                                                <label>Allowed Photos *</label>
+                                                <label class="form-label">Allowed Photos *</label>
                                                 <input type="text" class="form-control" name="allowed_photos" value="{{ old('allowed_photos') }}">
                                                 @error('allowed_photos')
                                                     <small class="text-danger">{{ $message }}</small>
@@ -80,7 +80,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group mb-3">
-                                                <label>Allowed Videos *</label>
+                                                <label class="form-label">Allowed Videos *</label>
                                                 <input type="text" class="form-control" name="allowed_videos" value="{{ old('allowed_videos') }}">
                                                 @error('allowed_videos')
                                                     <small class="text-danger">{{ $message }}</small>

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>The Home</title>
 
-    <link rel="icon" type="image/png" href="{{ asset('uploads/favicon.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('website-images/' . $setting->favicon) }}">
     <link rel="stylesheet" href="{{ asset('dist-front/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('dist-front/css/animate.min.css') }}">
     <link rel="stylesheet" href="{{ asset('dist-front/css/magnific-popup.css') }}">

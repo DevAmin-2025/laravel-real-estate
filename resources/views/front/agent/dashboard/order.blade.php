@@ -1,6 +1,6 @@
 @extends('front.layouts.master')
 @section('content')
-    <div class="page-top" style="background-image: url({{ asset('uploads/banner.jpg') }})">
+    <div class="page-top" style="background-image: url({{ asset('website-images/' . $setting->banner) }})">
         <div class="bg"></div>
         <div class="container">
             <div class="row">
@@ -19,7 +19,7 @@
                 </div>
                 <div class="col-lg-9 col-md-12">
                     <div class="table-responsive">
-                        <table class="table table-bordered text-center">
+                        <table class="table table-bordered text-center align-middle">
                             <tbody>
                                 <tr>
                                     <th>SL</th>

@@ -7,7 +7,7 @@
             <div class="section-header d-flex justify-content-between">
                 <h1>Create Post</h1>
                 <div class="ml-auto">
-                    <a href="{{ route('admin.blog.index') }}" class="btn btn-primary"><i class="fas fa-arrow-left"></i>Back</a>
+                    <a href="{{ route('admin.blog.index') }}" class="btn btn-primary"><i class="fas fa-arrow-left m-2"></i>Back</a>
                 </div>
             </div>
             <div class="section-body">

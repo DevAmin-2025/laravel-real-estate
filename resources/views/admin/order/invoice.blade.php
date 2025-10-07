@@ -24,7 +24,7 @@
                                                         <tbody>
                                                             <tr>
                                                                 <td class="w-50">
-                                                                    <img src="{{ asset('uploads/logo.png') }}" alt="Logo" class="w_100">
+                                                                    <img src="{{ asset('website-images/' . $setting->logo) }}" alt="Logo" class="w_100">
                                                                 </td>
                                                                 <td class="w-50">
                                                                     <div class="invoice-top-right">

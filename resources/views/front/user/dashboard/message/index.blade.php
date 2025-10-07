@@ -1,6 +1,6 @@
 @extends('front.layouts.master')
 @section('content')
-    <div class="page-top" style="background-image: url({{ asset('uploads/banner.jpg') }})">
+    <div class="page-top" style="background-image: url({{ asset('website-images/' . $setting->banner) }})">
         <div class="bg"></div>
         <div class="container">
             <div class="row">

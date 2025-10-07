@@ -19,13 +19,13 @@
                                     @csrf
                                     @method('PUT')
                                     <div class="form-group mb-3">
-                                        <label>Existing Photo</label>
+                                        <label class="form-label">Existing Photo</label>
                                         <div>
                                             <img src="{{ asset('location-images/' . $location->photo) }}" alt="Location-image" class="w_200">
                                         </div>
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label>Change Photo</label>
+                                        <label class="form-label">Change Photo</label>
                                         <div>
                                             <input type="file" name="photo">
                                             @error('photo')
@@ -34,7 +34,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label>Name *</label>
+                                        <label class="form-label">Name *</label>
                                         <input type="text" class="form-control" name="name" value="{{ $location->name }}">
                                         @error('name')
                                             <small class="text-danger">{{ $message }}</small>

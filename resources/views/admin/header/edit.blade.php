@@ -6,6 +6,9 @@
         <section class="section">
             <div class="section-header d-flex justify-content-between">
                 <h1>Edit Header</h1>
+                <div class="ml-auto">
+                    <a href="{{ route('admin.header.show') }}" class="btn btn-primary"><i class="fas fa-arrow-left m-2"></i>Back</a>
+                </div>
             </div>
             <div class="section-body">
                 <div class="row">
@@ -16,13 +19,13 @@
                                     @csrf
                                     @method('PUT')
                                     <div class="form-group mb-3">
-                                        <label class="from-label">Existing Photo</label>
+                                        <label class="form-label">Existing Photo</label>
                                         <div>
                                             <img src="{{ asset('website-images/' . $header->photo) }}" alt="Header-image" class="w_200">
                                         </div>
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label class="from-label">Change Photo</label>
+                                        <label class="form-label">Change Photo</label>
                                         <div>
                                             <input type="file" name="photo">
                                             @error('photo')
@@ -31,14 +34,14 @@
                                         </div>
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label class="from-label">Title *</label>
+                                        <label class="form-label">Title *</label>
                                         <input type="text" class="form-control" name="title" value="{{ ucwords($header->title) }}">
                                         @error('title')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label class="from-label">Text *</label>
+                                        <label class="form-label">Text *</label>
                                         <input type="text" class="form-control" name="text" value="{{ $header->text }}">
                                         @error('text')
                                             <small class="text-danger">{{ $message }}</small>

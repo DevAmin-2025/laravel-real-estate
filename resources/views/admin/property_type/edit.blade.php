@@ -21,7 +21,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group mb-3">
-                                                <label>Name *</label>
+                                                <label class="form-label">Name *</label>
                                                 <input type="text" class="form-control" name="name" value="{{ $propertyType->name }}">
                                                 @error('name')
                                                     <small class="text-danger">{{ $message }}</small>

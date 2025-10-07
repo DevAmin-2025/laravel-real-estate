@@ -15,7 +15,7 @@
                                 <div class="form-group">
                                     <input type="password" class="form-control" name="password" placeholder="Password" autofocus>
                                     @error('password')
-                                        <p class="text-danger small">{{ $message }}</p>
+                                        <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
                                 <div class="form-group">

@@ -132,7 +132,7 @@
         </div>
     </div>
 
-    <div class="why-choose" style="background-image: url({{ asset('website-images/why-choose.jpg') }})">
+    <div class="why-choose" style="background-image: url({{ asset('website-images/' . $setting->why_choose_us_image) }})">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -225,7 +225,7 @@
         </div>
     </div>
 
-    <div class="testimonial" style="background-image: url({{ asset('website-images/testimonial-bg.jpg') }})">
+    <div class="testimonial" style="background-image: url({{ asset('website-images/' . $setting->our_happy_clients_image) }})">
         <div class="bg"></div>
         <div class="container">
             <div class="row">

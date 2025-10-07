@@ -54,7 +54,11 @@ Route::controller(UserDahsboardController::class)->prefix('user')->middleware('u
     Route::delete('remove-from-wishlist/{wishlist}', 'removeFromWishlist')->name('user.remove.from.wishlist');
 });
 
-Route::controller(UserMessageController::class)->prefix('user/messages')->middleware('user.auth')->name('user.messages.')->group(function () {
+Route::controller(UserMessageController::class)
+    ->prefix('user/messages')
+    ->middleware('user.auth')
+    ->name('user.messages.')
+    ->group(function () {
     Route::get('', 'index')->name('index');
     Route::get('create', 'create')->name('create');
     Route::post('create', 'store')->name('store');
@@ -100,7 +104,11 @@ Route::controller(AgentPropertyController::class)->middleware('agent.auth')->pre
 });
 Route::resource('agent/properties', AgentPropertyController::class)->middleware('agent.auth')->names('agent.properties');
 
-Route::controller(AgentMessageController::class)->prefix('agent/messages')->middleware('agent.auth')->name('agent.messages.')->group(function () {
+Route::controller(AgentMessageController::class)
+    ->prefix('agent/messages')
+    ->middleware('agent.auth')
+    ->name('agent.messages.')
+    ->group(function () {
     Route::get('', 'index')->name('index');
     Route::get('reply/{message}', 'reply')->name('reply');
     Route::post('reply/{message}', 'submitReply')->name('reply.submit');
@@ -124,24 +132,43 @@ Route::controller(AdminDahsboardController::class)->prefix('admin')->middleware(
     Route::post('edit/profile/{admin}', 'editProfileSubmit')->name('admin.edit.profile.submit');
 });
 
-Route::resource('admin/plans', AdminPlanController::class)->middleware('admin.auth')->except('show')->names('admin.plans');
-Route::resource('admin/locations', AdminLocationController::class)->middleware('admin.auth')->except('show')->names('admin.locations');
-Route::resource('admin/property-types', AdminPropertyTypeController::class)->middleware('admin.auth')->except('show')->names('admin.property.types');
-Route::resource('admin/amenities', AdminAmenityController::class)->middleware('admin.auth')->except('show')->names('admin.amenities');
-Route::resource('admin/users', AdminUserController::class)->middleware('admin.auth')->except('show')->names('admin.users');
-Route::resource('admin/agents', AdminAgentController::class)->middleware('admin.auth')->names('admin.agents');
-Route::resource('admin/why-choose-us', AdminWhyChooseUsController::class)->middleware('admin.auth')->except('show')->names('admin.why-choose-us')->parameters(['why-choose-us' => 'item']);
-Route::resource('admin/testimonial', AdminTestimonialController::class)->middleware('admin.auth')->except('show')->names('admin.testimonial');
-Route::resource('admin/blog', AdminBlogController::class)->middleware('admin.auth')->names('admin.blog');
-Route::resource('admin/faq', AdminFaqController::class)->middleware('admin.auth')->names('admin.faq');
+Route::resource('admin/plans', AdminPlanController::class)
+    ->middleware('admin.auth')->except('show')->names('admin.plans');
+Route::resource('admin/locations', AdminLocationController::class)
+    ->middleware('admin.auth')->except('show')->names('admin.locations');
+Route::resource('admin/property-types', AdminPropertyTypeController::class)
+    ->middleware('admin.auth')->except('show')->names('admin.property.types');
+Route::resource('admin/amenities', AdminAmenityController::class)
+    ->middleware('admin.auth')->except('show')->names('admin.amenities');
+Route::resource('admin/users', AdminUserController::class)
+    ->middleware('admin.auth')->except('show')->names('admin.users');
+Route::resource('admin/agents', AdminAgentController::class)
+    ->middleware('admin.auth')->names('admin.agents');
+Route::resource('admin/why-choose-us', AdminWhyChooseUsController::class)
+    ->middleware('admin.auth')->except('show')
+    ->names('admin.why-choose-us')->parameters(['why-choose-us' => 'item']);
+Route::resource('admin/testimonial', AdminTestimonialController::class)
+    ->middleware('admin.auth')->except('show')->names('admin.testimonial');
+Route::resource('admin/blog', AdminBlogController::class)
+    ->middleware('admin.auth')->names('admin.blog');
+Route::resource('admin/faq', AdminFaqController::class)
+    ->middleware('admin.auth')->names('admin.faq');
 
-Route::post('admin/properties/make-active/{property}', [AdminPropertyController::class, 'makeActive'])->name('admin.properties.make.active');
-Route::delete('admin/properties/photo/{propertyPhoto}', [AdminPropertyController::class, 'destroyPhoto'])->name('admin.properties.photo.destroy');
-Route::delete('admin/properties/video/{propertyVideo}', [AdminPropertyController::class, 'destroyVideo'])->name('admin.properties.video.destroy');
-Route::resource('admin/properties', AdminPropertyController::class)->middleware('admin.auth')->except(['create', 'store'])->names('admin.properties');
+Route::controller(AdminPropertyController::class)->prefix('admin/properties')->name('admin.properties.')->group(function () {
+    Route::post('make-active/{property}', 'makeActive')->name('make.active');
+    Route::delete('photo/{propertyPhoto}', 'destroyPhoto')->name('photo.destroy');
+    Route::delete('video/{propertyVideo}', 'destroyVideo')->name('video.destroy');
+});
+Route::resource('admin/properties', AdminPropertyController::class)
+    ->middleware('admin.auth')
+    ->except(['create', 'store'])
+    ->names('admin.properties');
 
 Route::get('admin/subscribers/export', [AdminSubscriberController::class, 'export'])->name('admin.subscribers.export');
-Route::resource('admin/subscribers', AdminSubscriberController::class)->middleware('admin.auth')->except(['show', 'edit', 'update'])->names('admin.subscribers');
+Route::resource('admin/subscribers', AdminSubscriberController::class)
+    ->middleware('admin.auth')
+    ->except(['show', 'edit', 'update'])
+    ->names('admin.subscribers');
 
 Route::controller(AdminOrderController::class)->prefix('admin')->middleware('admin.auth')->group(function () {
     Route::get('orders', 'index')->name('admin.orders');

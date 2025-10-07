@@ -12,7 +12,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <form action="{{ route('admin.edit.profile.submit', $admin->id) }}" method="POST" enctype="multipart/form-data">
+                                <form action="{{ route('admin.edit.profile.submit', $admin) }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <div class="row">
                                         <div class="col-md-3">

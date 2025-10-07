@@ -19,56 +19,56 @@
                                     @csrf
                                     @method('PUT')
                                     <div class="form-group mb-3">
-                                        <label>Address *</label>
+                                        <label class="form-label">Address *</label>
                                         <input type="text" class="form-control" name="address" value="{{ $footer->address }}">
                                         @error('address')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label>Email *</label>
+                                        <label class="form-label">Email *</label>
                                         <input type="email" class="form-control" name="email" value="{{ $footer->email }}">
                                         @error('email')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label>Phone *</label>
+                                        <label class="form-label">Phone *</label>
                                         <input type="tel" class="form-control" name="phone" value="{{ $footer->phone }}">
                                         @error('phone')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label>Facebook</label>
+                                        <label class="form-label">Facebook</label>
                                         <input type="text" class="form-control" name="facebook" value="{{ $footer->facebook }}">
                                         @error('facebook')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label>Twitter</label>
+                                        <label class="form-label">Twitter</label>
                                         <input type="text" class="form-control" name="twitter" value="{{ $footer->twitter }}">
                                         @error('twitter')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label>LinkedIn</label>
+                                        <label class="form-label">LinkedIn</label>
                                         <input type="text" class="form-control" name="linkedin" value="{{ $footer->linkedin }}">
                                         @error('linkedin')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label>Instagram</label>
+                                        <label class="form-label">Instagram</label>
                                         <input type="text" class="form-control" name="instagram" value="{{ $footer->instagram }}">
                                         @error('instagram')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                     <div class="form-group mb-3">
-                                        <label>Copyright *</label>
+                                        <label class="form-label">Copyright *</label>
                                         <input type="text" class="form-control" name="copyright" value="{{ $footer->copyright }}">
                                         @error('copyright')
                                             <small class="text-danger">{{ $message }}</small>

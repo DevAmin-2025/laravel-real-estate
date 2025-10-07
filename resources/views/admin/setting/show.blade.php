@@ -57,7 +57,7 @@
                                             <div class="form-group mb-3">
                                                 <label class="form-label">Existing Banner</label>
                                                 <div>
-                                                    <img src="{{ asset('website-images/'. $setting->banner) }}" alt="Favicon" class="w_200">
+                                                    <img src="{{ asset('website-images/'. $setting->banner) }}" alt="Banner" class="w_200">
                                                 </div>
                                             </div>
                                         </div>
@@ -72,7 +72,7 @@
                                             <div class="form-group mb-3">
                                                 <label class="form-label">Existing Banner</label>
                                                 <div>
-                                                    <img src="{{ asset('website-images/'. $setting->why_choose_us_image) }}" alt="Favicon" class="w_200">
+                                                    <img src="{{ asset('website-images/'. $setting->why_choose_us_image) }}" alt="Image" class="w_200">
                                                 </div>
                                             </div>
                                         </div>
@@ -87,7 +87,7 @@
                                             <div class="form-group mb-3">
                                                 <label class="form-label">Existing Banner</label>
                                                 <div>
-                                                    <img src="{{ asset('website-images/'. $setting->our_happy_clients_image) }}" alt="Favicon" class="w_200">
+                                                    <img src="{{ asset('website-images/'. $setting->our_happy_clients_image) }}" alt="Image" class="w_200">
                                                 </div>
                                             </div>
                                         </div>

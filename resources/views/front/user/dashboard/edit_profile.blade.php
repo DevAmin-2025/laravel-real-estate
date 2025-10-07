@@ -1,6 +1,6 @@
 @extends('front.layouts.master')
 @section('content')
-        <div class="page-top" style="background-image: url({{ asset('uploads/banner.jpg') }})">
+        <div class="page-top" style="background-image: url({{ asset('website-images/' . $setting->banner) }})">
         <div class="bg"></div>
         <div class="container">
             <div class="row">
@@ -10,7 +10,6 @@
             </div>
         </div>
     </div>
-
     <div class="page-content user-panel">
         <div class="container">
             <div class="row">
@@ -18,7 +17,7 @@
                     <x-dashboard/>
                 </div>
                 <div class="col-lg-9 col-md-12">
-                    <form action="{{ route('user.edit.profile.submit', $user->id) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('user.edit.profile.submit', $user) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row g-4">
                             <div class="col-md-12">

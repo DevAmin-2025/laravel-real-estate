@@ -20,7 +20,7 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group mb-3">
-                                                <label>Photo *</label>
+                                                <label class="form-label">Photo *</label>
                                                 <input type="file" class="form-control" name="photo">
                                                 @error('photo')
                                                     <small class="text-danger">{{ $message }}</small>
@@ -29,7 +29,7 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group mb-3">
-                                                <label>Name *</label>
+                                                <label class="form-label">Name *</label>
                                                 <input type="text" class="form-control" name="name" value="{{ old('name') }}">
                                                 @error('name')
                                                     <small class="text-danger">{{ $message }}</small>

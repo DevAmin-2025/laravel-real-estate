@@ -19,7 +19,7 @@
                                     @csrf
                                     @method('PUT')
                                     <div class="form-group mb-3">
-                                        <label>Existing Photo</label>
+                                        <label class="form-label">Existing Photo</label>
                                         <div>
                                             <img src="{{ asset('blog-images/' . $blog->photo) }}" alt="Location-image" class="w_200">
                                         </div>
