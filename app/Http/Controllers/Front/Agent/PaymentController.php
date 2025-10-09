@@ -63,7 +63,7 @@ class PaymentController extends Controller
             ]);
             return redirect($startGateWayUrl);
         } else {
-            return redirect()->back()->with('error', 'Connection to service failed. Please try again.');
+            return back()->with('error', 'Connection to service failed. Please try again.');
         };
     }
 
@@ -116,9 +116,9 @@ class PaymentController extends Controller
                         $message->to(Auth::guard('agent')->user()->email);
                         $message->subject('Payment Successful');
                     });
-                    return redirect()->route('agent.dashboard')->with('success', 'Purchase successfull.');
+                    return redirect()->route('agent.plan')->with('success', 'Purchase successfull.');
                 } catch (\Exception $e) {
-                    return redirect()->route('agent.dashboard')->with('error', 'Something went wrong. Please contact support.');
+                    return redirect()->route('agent.plan')->with('error', 'Something went wrong. Please contact support.');
                 };
             } else {
                 return redirect()->route('agent.dashboard')->with(
@@ -127,7 +127,7 @@ class PaymentController extends Controller
                 );
             };
         } else {
-            return redirect()->back()->with('error', 'Transaction failed. Please try again.');
+            return redirect()->route('pricing')->with('error', 'Transaction failed. Please try again.');
         };
     }
 
